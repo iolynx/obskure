@@ -8,6 +8,7 @@ const api = {}
 
 contextBridge.exposeInMainWorld('electronAPI', {
   getPasswords: () => ipcRenderer.invoke('get-passwords'),
+  savePassword: (newPassword) => ipcRenderer.invoke('save-password', newPassword),
 });
 
 // Use `contextBridge` APIs to expose Electron APIs to

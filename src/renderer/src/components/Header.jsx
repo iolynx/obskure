@@ -3,12 +3,12 @@ import Stack from '@mui/material/Stack';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import Search from './Search';
 import TitleBar from './TitleBar'
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
 import { Divider } from '@mui/material';
 
-export default function Header() {
+export default function Header({ onAddClick }) {
   return (
     <Stack
       direction="row"
@@ -31,9 +31,11 @@ export default function Header() {
       <Stack direction="row" sx={{ gap: 5.8}}>
         <TitleBar />
 
-        <IconButton aria-label='plus' size='small'>
-          <AddRoundedIcon />
-        </IconButton>
+        <Tooltip title="Add New Record">
+          <IconButton aria-label='plus' size='small' onClick={onAddClick}>
+            <AddRoundedIcon />
+          </IconButton>
+        </Tooltip>
         <Search />
       </Stack>
 

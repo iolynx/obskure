@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Header from './components/Header';
 import MainContent from './passwords-page/mainContent';
+import { useState } from 'react';
 
 const PWContainer = styled(Stack)(({ theme }) => ({
   '&::before': {
@@ -30,6 +31,12 @@ const PWContainer = styled(Stack)(({ theme }) => ({
 
 
 export default function PasswordsPage(props) {
+
+  const [addMode, setAddMode] = useState(false);
+
+  const handleAddClick = () => {
+    setAddMode(!addMode);
+  }
 
   useEffect(() => {
     // Add class to body
@@ -68,8 +75,8 @@ export default function PasswordsPage(props) {
                 // backgroundImage: 'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))',
               }}
             >
-            <Header />
-            <MainContent />
+            <Header onAddClick={handleAddClick} />
+            <MainContent addMode={addMode} setAddMode={setAddMode} />
           </Box>
         </Stack>
       </PWContainer>

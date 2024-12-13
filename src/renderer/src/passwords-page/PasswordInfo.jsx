@@ -1,12 +1,14 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import { IconButton  } from '@mui/material';
+import { IconButton, Tooltip  } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import { Snackbar, Alert, Button } from '@mui/material';
 import { useState } from 'react';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 export default function PasswordInfo({ password }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -61,19 +63,44 @@ export default function PasswordInfo({ password }) {
     >
       {password ? (
         <>
-          <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {password.service}
-          </Typography>
+
 
           <Box
           sx={{
-            height:'20px'
+            height:'50px',
+            display:'flex'
           }}>
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              {password.service}
+            </Typography>
+            <Box
+            sx={{
+              width:'95%'
+            }}>
+            </Box>
+
+
+            <Tooltip title="Edit Record">
+              <IconButton aria-label="delete" size="small" sx={{mr:1}}>
+                <EditRoundedIcon />
+              </IconButton>
+            </Tooltip>
+
+
+            <Tooltip title="Delete Record">
+              <IconButton aria-label="delete" size="small">
+                <DeleteRoundedIcon />
+              </IconButton>
+            </Tooltip>
+
           </Box>
 
-          <Typography variant="body1" sx={{ mt: 1 }}>
-            <strong>Website URL:</strong> <br/>
-          </Typography>
+          { password.other ? (
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              <strong>Website URL:</strong> <br/>
+            </Typography>
+          ) : (<></>)
+          }
 
           <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
             <Typography button variant="h5" color='lightblue'>
@@ -81,7 +108,7 @@ export default function PasswordInfo({ password }) {
             </Typography>
           </a>
 
-          <Typography variant="body1" sx={{ mt: 1 }}>
+          <Typography variant="body1" sx={{ mt: 2 }}>
             <strong>Username:</strong> <br/>
           </Typography>
           <Typography variant="h6" color="textTertiary"

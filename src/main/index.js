@@ -84,5 +84,21 @@ ipcMain.handle('get-passwords', async () => {
   }
 });
 
+ipcMain.handle('save-password', async (event, newPassword) => {
+  try{
+    // Write the passwords to the file
+    const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
+    const passwordsJSON = fs.readFileSync(passwordsFilePath, 'utf8');
+    const passwords = JSON.parse(passwordsJSON);
+    passwords.push(newPassword)
+    const newPasswordJSON = JSON.stringify(passwords)
+    fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8');
+    return { success: true };
+  } catch (error) {
+    console.error('Error saving passwords:', error);
+    return { success: false, error };
+  }
+})
+
 
 

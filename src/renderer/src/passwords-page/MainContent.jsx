@@ -5,17 +5,19 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PasswordInfo from './PasswordInfo';
 import PasswordsList from './PasswordsList';
+import PasswordEntry from './PasswordEntry';
 import { Divider } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
 import { useRef } from 'react';
 
 
-export default function MainContent(){
+export default function MainContent({ addMode, setAddMode }){
 
   const [selectedPassword, setSelectedPassword] = useState(null);
 
   const handlePasswordSelect = (password) => {
     setSelectedPassword(password);
+    setAddMode(false);
   };
 
   return(
@@ -47,7 +49,11 @@ export default function MainContent(){
           overflow: 'hidden',
         }}
       >
-        <PasswordInfo password={selectedPassword} />
+        {addMode ? (
+          <PasswordEntry />
+        ) : (
+          <PasswordInfo password={selectedPassword}/>
+        )}
       </Box>
 
     </Box>

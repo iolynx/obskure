@@ -5,12 +5,11 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
-import { Paper, List, IconButton, Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Paper, List, IconButton, Snackbar, Alert, CircularProgress, Tooltip } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 
 
-
-export default function PasswordsList({ onPasswordSelect }) {
+export default function PasswordsList({ onPasswordSelect}) {
   const [passwords, setPasswords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +19,7 @@ export default function PasswordsList({ onPasswordSelect }) {
 
   const handleSelect = (index, password) => {
     setSelectedIndex(index);
-    onPasswordSelect(password)
+    onPasswordSelect(password);
   }
 
   const handleCopy = (password) => {
@@ -124,10 +123,12 @@ export default function PasswordsList({ onPasswordSelect }) {
                 </Typography>
               </Stack>
               <Box>
-                <IconButton aria-label='copy' size='small'
-                  onClick={(e) => {e.stopPropagation(); handleCopy(password.password)}} >
-                  <ContentCopyRoundedIcon />
-                </IconButton>
+                <Tooltip title='Copy Password'>
+                  <IconButton aria-label='copy' size='small'
+                    onClick={(e) => {e.stopPropagation(); handleCopy(password.password)}} >
+                    <ContentCopyRoundedIcon />
+                  </IconButton>
+                </Tooltip>
               </Box>
             </ListItem>
             <Divider width='110%' />
