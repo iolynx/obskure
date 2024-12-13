@@ -1,26 +1,22 @@
 import React, { useEffect } from 'react';
-import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import MuiDrawer, { drawerClasses } from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
-import { Paper, List, IconButton } from '@mui/material';
-import {CircularProgress} from '@mui/material';
+import { Paper, List, IconButton, Snackbar, Alert, CircularProgress } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import ListItemButton from '@mui/material/ListItemButton';
-import { ContentCopy } from '@mui/icons-material';
 
 
-const drawerWidth = 240;
 
 export default function PasswordsList({ onPasswordSelect }) {
   const [passwords, setPasswords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleSelect = (index, password) => {
     setSelectedIndex(index);
@@ -29,9 +25,21 @@ export default function PasswordsList({ onPasswordSelect }) {
   }
 
   const handleCopy = (password) => {
-    navigator.clipboard.writeText(password);
-  }
+    navigator.clipboard.writeText(password)
+    .then(() => {
+      setSnackbarMessage('Password copied to clipboard!');
+      setSnackbarOpen(true);
+    })
+    .catch((err) => {
+      console.error('Failed to copy password: ', err);
+      setSnackbarMessage('Failed to copy password');
+      setSnackbarOpen(true);
+    });
+  };
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   useEffect(() => {
     // Fetch passwords when the component mounts
@@ -57,16 +65,17 @@ export default function PasswordsList({ onPasswordSelect }) {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+      >
         <CircularProgress />
       </div>
     );
   }
 
-
   return (
-    <Paper
-      sx = {{
+    <Box
+      sx={{
         height: '100%',
         overflow: 'visible',
         p: 2,
@@ -75,9 +84,8 @@ export default function PasswordsList({ onPasswordSelect }) {
         width: '100%'
       }}
     >
-
       {error ? (
-        <p sx={{ color: 'red' }}> {error} </p>
+        <p> {error} </p>
       ) : (
         <List
           direction="row"
@@ -125,8 +133,18 @@ export default function PasswordsList({ onPasswordSelect }) {
             <Divider width='110%' />
             </>
           ))}
-        </List>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={1400}
+              onClose={handleCloseSnackbar}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
+                {snackbarMessage}
+              </Alert>
+            </Snackbar>
+          </List>
       )}
-    </Paper>
+    </Box>
   );
 }

@@ -303,7 +303,7 @@ export const colorSchemes = {
         // default: gray[900],
         // default: green[900],
         // default: 'hsl(97, 9%, 9%)',
-        defualt: 'hsl(0, 0%, 4%)',
+        default: 'hsl(0, 0%, 4%)',
         // default: 'hsl(268, 34%, 30%)',
         // paper: 'hsl(220, 30%, 7%)',
       },
