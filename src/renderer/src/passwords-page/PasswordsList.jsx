@@ -7,17 +7,30 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
-import { Paper, List } from '@mui/material';
+import { Paper, List, IconButton } from '@mui/material';
 import {CircularProgress} from '@mui/material';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import ListItemButton from '@mui/material/ListItemButton';
+import { ContentCopy } from '@mui/icons-material';
 
 
 const drawerWidth = 240;
 
-export default function PasswordsList() {
+export default function PasswordsList({ onPasswordSelect }) {
   const [passwords, setPasswords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(null);
+
+  const handleSelect = (index, password) => {
+    setSelectedIndex(index);
+    console.log(selectedIndex);
+    onPasswordSelect(password)
+  }
+
+  const handleCopy = (password) => {
+    navigator.clipboard.writeText(password);
+  }
 
 
   useEffect(() => {
@@ -59,12 +72,9 @@ export default function PasswordsList() {
         p: 2,
         boxShadow: 3,
         flex: 1, // Allow it to stretch in the flex container
-        width: '100%', // Occupy full width
+        width: '100%'
       }}
     >
-      <Typography variant='h4' sx = {{ mb : 2}}>
-        Passwords
-      </Typography>
 
       {error ? (
         <p sx={{ color: 'red' }}> {error} </p>
@@ -75,14 +85,27 @@ export default function PasswordsList() {
             p: 0,
             gap: 1,
             alignItems: 'center',
-            borderTop: '1px solid',
+            maxWidth: '100%',
+            // borderTop: '1px solid',
             borderColor: 'divider',
           }}
         >
 
           {passwords.map((password, index) => (
             <>
-            <ListItem key={index} button>
+            <ListItem
+              key={index}
+              button={true}
+              sx={{
+                justifyContent: 'space-between',
+                pr: 1,
+                pl: 1,
+                backgroundColor: selectedIndex === index ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+                transition: 'background-color 0.2s',
+                // padding: '8px 16px'
+              }}
+              onClick={() => handleSelect(index, password)}
+            >
               <Stack direction="column" spacing={-2}>
                 <Typography variant="body1" display="block" sx={{ fontWeight: 500, lineHeight: '16px',}}>
                   {password.service}<br/>
@@ -92,6 +115,12 @@ export default function PasswordsList() {
                   {password.username}
                 </Typography>
               </Stack>
+              <Box>
+                <IconButton aria-label='copy' size='small'
+                  onClick={(e) => {e.stopPropagation(); handleCopy(password.password)}} >
+                  <ContentCopyRoundedIcon />
+                </IconButton>
+              </Box>
             </ListItem>
             <Divider width='110%' />
             </>

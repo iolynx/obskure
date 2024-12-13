@@ -310,6 +310,8 @@ export const colorSchemes = {
       text: {
         primary: 'hsl(0, 0%, 100%)',
         secondary: gray[400],
+        tertiary: 'hsl(210, 16%, 70%)',
+        info: 'hsl(210, 10%, 46%)',
       },
       action: {
         hover: alpha(gray[600], 0.2),

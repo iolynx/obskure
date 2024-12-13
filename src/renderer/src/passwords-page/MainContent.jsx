@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -12,32 +12,42 @@ import { useRef } from 'react';
 
 export default function MainContent(){
 
+  const [selectedPassword, setSelectedPassword] = useState(null);
+
+  const handlePasswordSelect = (password) => {
+    setSelectedPassword(password);
+  };
 
   return(
-    <Box sx={{ width:'100vh', maxWidth: { sm: '100vh', md: '100vh'}, overflow:'visible'}}>
-      <Grid2
-        container
-        spacing={0}
-        columns={12}
+    <Box sx={{
+      width:'100vh',
+      maxWidth: { sm: '100vh', md: '100vh'},
+      overflow:'auto',
+      display: 'flex',
+    }}
+    >
+      <Box
         sx={{
-          '--Grid-borderWidth': '2px',
+          flex: '1 1 auto',
+          overflowY: 'scroll',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#8897b3 #121212',
+          borderRight: '2px solid',
           borderColor: 'divider',
-          '& > div': {
-            borderWidth:'6px',
-            borderRight: 'var(--Grid-borderWidth) solid',
-            borderBottom: 'var(--Grid-borderWidth) solid',
-            borderColor: 'divider',
-          },
         }}
       >
-        <Grid2 size={{xs: 12, sm: 5}} sx={{overflow:'auto'}}>
-          <PasswordsList />
-        </Grid2>
-        <Grid2 size={{xs: 12, sm: 7}} sx={{overflow:'hidden', height:'200px'}}>
-          <PasswordInfo />
-        </Grid2>
+        <PasswordsList onPasswordSelect={handlePasswordSelect} />
+      </Box>
 
-      </Grid2>
+      <Box
+        sx={{
+          flex: '1 1 auto',
+          overflow: 'hidden',
+        }}
+      >
+        <PasswordInfo password={selectedPassword} />
+      </Box>
+
     </Box>
   );
 }

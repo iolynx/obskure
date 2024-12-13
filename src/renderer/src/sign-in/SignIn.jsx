@@ -143,7 +143,7 @@ export default function SignIn(props) {
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
-                placeholder="••••••••••••"
+                // placeholder="••••••••••••"
                 type="password"
                 id="password"
                 autoComplete="current-password"

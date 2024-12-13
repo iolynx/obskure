@@ -9,6 +9,7 @@ import ListItem from '@mui/material/ListItem'
 import SideMenu from './passwords-page/SideMenu';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Header from './components/Header';
 import MainContent from './passwords-page/mainContent';
 
 const PWContainer = styled(Stack)(({ theme }) => ({
@@ -45,22 +46,32 @@ export default function PasswordsPage(props) {
     <AppTheme {...props}>
       <CssBaseline  />
       <PWContainer>
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-        <Box
-            component="main"
-            sx={{
-              display: 'flex',
-              flexGrow: 1,
-              p: 0,
-              overflow: 'auto',
-              height: '100vh',
-              // backgroundImage: 'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))',
-            }}
-          >
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            alignItems:'center',
+            marginLeft: '-16px',
+          }}
+        >
           <SideMenu/>
           <Divider orientation='vertical'/>
-          <MainContent />
-        </Box>
+          <Box
+              component="main"
+              // direction="column"
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                p: 0,
+                height: '100vh',
+                // backgroundImage: 'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))',
+              }}
+            >
+            <Header />
+            <MainContent />
+          </Box>
+        </Stack>
       </PWContainer>
     </AppTheme>
   );
