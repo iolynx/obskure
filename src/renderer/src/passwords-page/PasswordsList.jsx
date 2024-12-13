@@ -20,7 +20,6 @@ export default function PasswordsList({ onPasswordSelect }) {
 
   const handleSelect = (index, password) => {
     setSelectedIndex(index);
-    console.log(selectedIndex);
     onPasswordSelect(password)
   }
 
@@ -106,9 +105,10 @@ export default function PasswordsList({ onPasswordSelect }) {
               button={true}
               sx={{
                 justifyContent: 'space-between',
+                borderRadius: '10px',
                 pr: 1,
                 pl: 1,
-                backgroundColor: selectedIndex === index ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+                backgroundColor: selectedIndex === index ? 'rgba(22, 25, 29, 0.6)' : 'transparent',
                 transition: 'background-color 0.2s',
                 // padding: '8px 16px'
               }}

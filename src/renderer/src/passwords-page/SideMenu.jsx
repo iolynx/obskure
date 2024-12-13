@@ -11,7 +11,7 @@ import { Button, IconButton } from '@mui/material';
 import {Navigate, useNavigate} from 'react-router-dom';
 
 
-const drawerWidth = 240;
+const drawerWidth = 215;
 
 const Drawer = styled(MuiDrawer)({
   width: drawerWidth,

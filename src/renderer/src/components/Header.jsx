@@ -14,7 +14,7 @@ export default function Header() {
       direction="row"
       sx={{
         display: { xs: 'none', md: 'flex' },
-        width: 'calc(100vw - 259px)',
+        width: 'calc(100vw - 234px)',
         alignItems: { xs: 'flex-start', md: 'center' },
         justifyContent: 'space-between',
         maxWidth: { sm: '100%', md: '1700px' },
@@ -28,7 +28,7 @@ export default function Header() {
       }}
       spacing={2}
     >
-      <Stack direction="row" sx={{ gap: 5.5}}>
+      <Stack direction="row" sx={{ gap: 5.8}}>
         <TitleBar />
 
         <IconButton aria-label='plus' size='small'>

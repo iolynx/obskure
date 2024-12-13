@@ -11,6 +11,11 @@
   flex-direction: column;
 }
 
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-in-out;
+}
+
 body.custom-justify{
   justify-content: left;
 }

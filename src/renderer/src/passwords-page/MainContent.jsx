@@ -20,8 +20,7 @@ export default function MainContent(){
 
   return(
     <Box sx={{
-      width:'100vh',
-      maxWidth: { sm: '100vh', md: '100vh'},
+      maxWidth: { sm: '100%', md: '100%'},
       overflow:'auto',
       display: 'flex',
     }}
@@ -30,10 +29,13 @@ export default function MainContent(){
         sx={{
           flex: '1 1 auto',
           overflowY: 'scroll',
+          overflowX: 'hidden',
           scrollbarWidth: 'thin',
           scrollbarColor: '#8897b3 #121212',
           borderRight: '2px solid',
           borderColor: 'divider',
+          maxWidth: '300px',
+          width: '300px'
         }}
       >
         <PasswordsList onPasswordSelect={handlePasswordSelect} />
