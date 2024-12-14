@@ -2,23 +2,64 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Snackbar, Alert } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import PasswordInfo from './PasswordInfo';
 import PasswordsList from './PasswordsList';
 import PasswordEntry from './PasswordEntry';
-import { Divider } from '@mui/material';
-import Grid2 from '@mui/material/Grid2';
-import { useRef } from 'react';
 
 
 export default function MainContent({ addMode, setAddMode }){
 
+  const [passwords, setPasswords] = useState([]);
   const [selectedPassword, setSelectedPassword] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPasswords = async () => {
+      try {
+        const result = await window.electronAPI.getPasswords();
+        if (result.error) {
+          console.log(result.error);
+          setError(result.error);
+        } else {
+          setPasswords(result);
+        }
+      } catch (err) {
+        console.error('Error fetching passwords:', err);
+        setError('An unexpected error occurred.');
+      }
+    };
+    fetchPasswords();
+  }, []);
 
   const handlePasswordSelect = (password) => {
     setSelectedPassword(password);
     setAddMode(false);
   };
+
+
+  const handlePasswordDelete = async (password) => {
+    const result = await window.electronAPI.deletePassword(password)
+    if (result.success){
+      setSnackbarMessage('Record Deleted Successfully');
+      setSnackbarOpen(true);
+      setPasswords(result.remainingEntries);
+      setSelectedPassword(0);
+    }
+    else {
+      console.error('Failed to delete Record: ', result.error);
+      setSnackbarMessage('Failed to delete Record');
+      setSnackbarOpen(true);
+    }
+  }
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
 
   return(
     <Box sx={{
@@ -40,7 +81,7 @@ export default function MainContent({ addMode, setAddMode }){
           width: '300px'
         }}
       >
-        <PasswordsList onPasswordSelect={handlePasswordSelect} />
+        <PasswordsList passwords={passwords} onPasswordSelect={handlePasswordSelect} error={error} />
       </Box>
 
       <Box
@@ -52,9 +93,20 @@ export default function MainContent({ addMode, setAddMode }){
         {addMode ? (
           <PasswordEntry />
         ) : (
-          <PasswordInfo password={selectedPassword}/>
+          <PasswordInfo password={selectedPassword} onDelete={handlePasswordDelete} />
         )}
       </Box>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1400}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
 
     </Box>
   );

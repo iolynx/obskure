@@ -9,10 +9,8 @@ import { Paper, List, IconButton, Snackbar, Alert, CircularProgress, Tooltip } f
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 
 
-export default function PasswordsList({ onPasswordSelect}) {
-  const [passwords, setPasswords] = useState([]);
+export default function PasswordsList({passwords, onPasswordSelect, error}) {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -39,37 +37,6 @@ export default function PasswordsList({ onPasswordSelect}) {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
-    // Fetch passwords when the component mounts
-    const fetchPasswords = async () => {
-      try {
-        const result = await window.electronAPI.getPasswords();
-        if (result.error) {
-          console.log(result.error);
-          setError(result.error);
-        } else {
-          setPasswords(result);
-        }
-      } catch (err) {
-        console.error('Error fetching passwords:', err);
-        setError('An unexpected error occurred.');
-      } finally {
-        setLoading(false); // Set loading to false after fetch is done
-      }
-    };
-
-    fetchPasswords();
-  }, []);
-
-  if (loading) {
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
-      >
-        <CircularProgress />
-      </div>
-    );
-  }
 
   return (
     <Box

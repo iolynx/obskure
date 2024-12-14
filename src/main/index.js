@@ -72,12 +72,25 @@ app.on('window-all-closed', () => {
   }
 })
 
+
+function readPasswordsFile(){
+  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
+  if(!fs.existsSync(passwordsFilePath)){
+    return [];
+  }
+  const data = fs.readFileSync(passwordsFilePath, 'utf8');
+  return JSON.parse(data);
+}
+
+function writePasswordsFile(passwords){
+  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
+  const newPasswordJSON = JSON.stringify(passwords)
+  fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8');
+}
+
 ipcMain.handle('get-passwords', async () => {
   try {
-    const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
-    const data = fs.readFileSync(passwordsFilePath, 'utf8');
-    const passwords = JSON.parse(data);
-    return passwords;
+    return readPasswordsFile();
   } catch (error) {
     console.error('Error reading passwords file:', error);
     return { error: 'Failed to load passwords' };
@@ -87,12 +100,9 @@ ipcMain.handle('get-passwords', async () => {
 ipcMain.handle('save-password', async (event, newPassword) => {
   try{
     // Write the passwords to the file
-    const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
-    const passwordsJSON = fs.readFileSync(passwordsFilePath, 'utf8');
-    const passwords = JSON.parse(passwordsJSON);
+    const passwords = readPasswordsFile();
     passwords.push(newPassword)
-    const newPasswordJSON = JSON.stringify(passwords)
-    fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8');
+    writePasswordsFile(passwords);
     return { success: true };
   } catch (error) {
     console.error('Error saving passwords:', error);
@@ -100,5 +110,20 @@ ipcMain.handle('save-password', async (event, newPassword) => {
   }
 })
 
-
+ipcMain.handle('delete-password', async (event, passwordToDelete) => {
+  try{
+    const passwords = readPasswordsFile();
+    // passwords.delete(passwordToDelete);
+    // let res = jData.filter(obj => obj.Name !== passwordToDelete.username);
+    const updatedPasswords = passwords.filter(
+      (entry) => !(entry.service === passwordToDelete.service && entry.username === passwordToDelete.username)
+    );
+    console.log(updatedPasswords);
+    writePasswordsFile(updatedPasswords);
+    return { success: true, remainingEntries: updatedPasswords };
+  } catch (error) {
+    console.error('Error deleting password', error);
+    return { success: false, error: error};
+  }
+})
 

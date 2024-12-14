@@ -12,6 +12,7 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import WifiPasswordRoundedIcon from '@mui/icons-material/WifiPasswordRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { DeleteRounded } from '@mui/icons-material';
 
 const mainListItems = [
   { text: 'All', icon : <HomeRoundedIcon /> },

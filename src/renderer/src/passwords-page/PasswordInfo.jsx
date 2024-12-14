@@ -10,7 +10,7 @@ import { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-export default function PasswordInfo({ password }) {
+export default function PasswordInfo({ password, onDelete }) {
   const [showPassword, setShowPassword] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -50,6 +50,14 @@ export default function PasswordInfo({ password }) {
     setSnackbarOpen(false);
   };
 
+  const handleDelete = () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
+    if (confirmDelete) {
+      onDelete(password);
+    }
+  }
+
+
   return (
     <Box
       sx={{
@@ -88,7 +96,7 @@ export default function PasswordInfo({ password }) {
 
 
             <Tooltip title="Delete Record">
-              <IconButton aria-label="delete" size="small">
+              <IconButton aria-label="delete" size="small" onClick={handleDelete}>
                 <DeleteRoundedIcon />
               </IconButton>
             </Tooltip>
