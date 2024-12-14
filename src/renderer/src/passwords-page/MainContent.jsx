@@ -8,7 +8,6 @@ import PasswordInfo from './PasswordInfo';
 import PasswordsList from './PasswordsList';
 import PasswordEntry from './PasswordEntry';
 
-
 export default function MainContent({ addMode, setAddMode }){
 
   const [passwords, setPasswords] = useState([]);
@@ -56,6 +55,23 @@ export default function MainContent({ addMode, setAddMode }){
     }
   }
 
+  const handlePasswordAddition = async (newPassword) => {
+    window.electronAPI.savePassword(newPassword).then((response) => {
+      if(response.success) {
+        setSnackbarMessage("Password saved successfully");
+        setSnackbarOpen(true);
+        setPasswords(response.newPasswords);
+        setAddMode(false);
+        setSelectedPassword(0);
+      }
+      else{
+        setSnackbarMessage("Error: Could not save Password");
+        setSnackbarOpen(true);
+        console.log(response.error);
+      }
+    });
+  }
+
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
@@ -91,7 +107,7 @@ export default function MainContent({ addMode, setAddMode }){
         }}
       >
         {addMode ? (
-          <PasswordEntry />
+          <PasswordEntry onAddition={handlePasswordAddition} />
         ) : (
           <PasswordInfo password={selectedPassword} onDelete={handlePasswordDelete} />
         )}

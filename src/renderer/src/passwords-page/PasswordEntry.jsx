@@ -6,7 +6,7 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
 import CustomSnackBar from '../components/CustomSnackbar';
 
-export default function PasswordEntry() {
+export default function PasswordEntry({ onAddition }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [newPassword, setNewPassword] = useState({
@@ -28,18 +28,7 @@ export default function PasswordEntry() {
   const handleSubmit = (event) => {
     handleSave();
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    window.electronAPI.savePassword(newPassword).then((response) => {
-      if(response.success) {
-        setSnackbarMessage("Password saved successfully");
-        setSnackbarOpen(true);
-      }
-      else{
-        setSnackbarMessage("Error: Could not save Password");
-        setSnackbarOpen(true);
-        console.log(response.error);
-      }
-    });
+    onAddition(newPassword);
   }
 
   const handleCloseSnackbar = () => {
@@ -107,10 +96,6 @@ export default function PasswordEntry() {
       <br/>
 
 
-      {/* <Typography variant="body1" sx={{ mt: 1 }}>
-        <strong>Username:</strong> <br />
-      </Typography> */}
-
       <AccountCircleRoundedIcon  sx={{position:'relative', top:'7px'}}/>
       <Input
         label="Username"
@@ -124,11 +109,7 @@ export default function PasswordEntry() {
         }}
       />
 
-
       <br/><br/>
-      {/* <Typography variant="body1" sx={{ mt: 1 }}>
-        <strong>Password:</strong> <br />
-      </Typography> */}
 
       <LockOpenRoundedIcon sx={{position:'relative', top:'7px'}} />
       <Input
@@ -143,6 +124,7 @@ export default function PasswordEntry() {
           ml:1
         }}
       />
+
       <br/><br/>
 
     <Button type="submit" variant="outlined" onClick={handleSave} sx={{ mt: 2 }}>

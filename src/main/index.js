@@ -103,7 +103,7 @@ ipcMain.handle('save-password', async (event, newPassword) => {
     const passwords = readPasswordsFile();
     passwords.push(newPassword)
     writePasswordsFile(passwords);
-    return { success: true };
+    return { success: true, newPasswords: passwords };
   } catch (error) {
     console.error('Error saving passwords:', error);
     return { success: false, error };
@@ -118,7 +118,6 @@ ipcMain.handle('delete-password', async (event, passwordToDelete) => {
     const updatedPasswords = passwords.filter(
       (entry) => !(entry.service === passwordToDelete.service && entry.username === passwordToDelete.username)
     );
-    console.log(updatedPasswords);
     writePasswordsFile(updatedPasswords);
     return { success: true, remainingEntries: updatedPasswords };
   } catch (error) {

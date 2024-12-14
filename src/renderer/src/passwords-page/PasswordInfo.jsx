@@ -9,12 +9,14 @@ import { Snackbar, Alert, Button } from '@mui/material';
 import { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import useConfirmation from './useConfirmation';
 
 export default function PasswordInfo({ password, onDelete }) {
   const [showPassword, setShowPassword] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-
+  const [result, setResult] = useState(false);
+  const {showDialog, DialogComponent} = useConfirmation();
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -50,12 +52,25 @@ export default function PasswordInfo({ password, onDelete }) {
     setSnackbarOpen(false);
   };
 
-  const handleDelete = () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
-    if (confirmDelete) {
+  const handleResult = (val) => {
+    setResult(val);
+  }
+
+  const handleDelete = async () => {
+    // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
+    const userConfirmed = await showDialog(
+      'Confirm Deletion',
+      'Are you sure you want to delete this entry?',
+    );
+    if (userConfirmed) {
       onDelete(password);
+      setResult(false);
     }
   }
+
+  const handleCloseConfirmation = () => {
+    setOpen(false);
+  };
 
 
   return (
@@ -159,6 +174,8 @@ export default function PasswordInfo({ password, onDelete }) {
               {snackbarMessage}
             </Alert>
           </Snackbar>
+
+          {DialogComponent}
 
         </>
       ) : (
