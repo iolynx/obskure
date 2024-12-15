@@ -16,7 +16,7 @@ export default function PasswordInfo({ password, onDelete }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [result, setResult] = useState(false);
-  const {showDialog, DialogComponent} = useConfirmation();
+  const { showDialog, DialogComponent } = useConfirmation();
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -24,28 +24,28 @@ export default function PasswordInfo({ password, onDelete }) {
 
   const handleCopyPassword = () => {
     navigator.clipboard.writeText(password.password)
-    .then(() => {
-      setSnackbarMessage('Password copied to clipboard!');
-      setSnackbarOpen(true);
-    })
-    .catch((err) => {
-      console.error('Failed to copy password: ', err);
-      setSnackbarMessage('Failed to copy password');
-      setSnackbarOpen(true);
-    });
+      .then(() => {
+        setSnackbarMessage('Password copied to clipboard!');
+        setSnackbarOpen(true);
+      })
+      .catch((err) => {
+        console.error('Failed to copy password: ', err);
+        setSnackbarMessage('Failed to copy password');
+        setSnackbarOpen(true);
+      });
   }
 
   const handleCopyUsername = () => {
     navigator.clipboard.writeText(password.username)
-    .then(() => {
-      setSnackbarMessage('Username copied to clipboard!');
-      setSnackbarOpen(true);
-    })
-    .catch((err) => {
-      console.error('Failed to copy Username: ', err);
-      setSnackbarMessage('Failed to copy Username');
-      setSnackbarOpen(true);
-    });
+      .then(() => {
+        setSnackbarMessage('Username copied to clipboard!');
+        setSnackbarOpen(true);
+      })
+      .catch((err) => {
+        console.error('Failed to copy Username: ', err);
+        setSnackbarMessage('Failed to copy Username');
+        setSnackbarOpen(true);
+      });
   }
 
   const handleCloseSnackbar = () => {
@@ -68,123 +68,123 @@ export default function PasswordInfo({ password, onDelete }) {
     }
   }
 
-  const handleCloseConfirmation = () => {
-    setOpen(false);
-  };
+    const handleCloseConfirmation = () => {
+      setOpen(false);
+    };
 
 
-  return (
-    <Box
-      sx={{
-        flex: 1, // Allow it to stretch in the flex container
-        height: '100%', // Occupy full height
-        pt: 3,
-        pl: 3,
-        pr: 3,
-        overflow:'hidden',
-      }}
-    >
-      {password ? (
-        <>
+    return (
+      <Box
+        sx={{
+          flex: 1, // Allow it to stretch in the flex container
+          height: '100%', // Occupy full height
+          pt: 3,
+          pl: 3,
+          pr: 3,
+          overflow: 'hidden',
+        }}
+      >
+        {password ? (
+          <>
 
 
-          <Box
-          sx={{
-            height:'50px',
-            display:'flex'
-          }}>
-            <Typography variant="h4" sx={{ fontWeight: 600 }}>
-              {password.service}
-            </Typography>
             <Box
-            sx={{
-              width:'95%'
-            }}>
+              sx={{
+                height: '50px',
+                display: 'flex'
+              }}>
+              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                {password.service}
+              </Typography>
+              <Box
+                sx={{
+                  width: '95%'
+                }}>
+              </Box>
+
+
+              <Tooltip title="Edit Record">
+                <IconButton aria-label="delete" size="small" sx={{ mr: 1 }}>
+                  <EditRoundedIcon />
+                </IconButton>
+              </Tooltip>
+
+
+              <Tooltip title="Delete Record">
+                <IconButton aria-label="delete" size="small" onClick={handleDelete}>
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </Tooltip>
+
             </Box>
 
+            {password.other ? (
+              <Typography variant="body1" sx={{ mt: 1 }}>
+                <strong>Website URL:</strong> <br />
+              </Typography>
+            ) : (<></>)
+            }
 
-            <Tooltip title="Edit Record">
-              <IconButton aria-label="delete" size="small" sx={{mr:1}}>
-                <EditRoundedIcon />
-              </IconButton>
-            </Tooltip>
+            <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
+              <Typography button variant="h5" color='lightblue'>
+                <u>{password.other}</u>
+              </Typography>
+            </a>
 
-
-            <Tooltip title="Delete Record">
-              <IconButton aria-label="delete" size="small" onClick={handleDelete}>
-                <DeleteRoundedIcon />
-              </IconButton>
-            </Tooltip>
-
-          </Box>
-
-          { password.other ? (
-            <Typography variant="body1" sx={{ mt: 1 }}>
-              <strong>Website URL:</strong> <br/>
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              <strong>Username:</strong> <br />
             </Typography>
-          ) : (<></>)
-          }
-
-          <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
-            <Typography button variant="h5" color='lightblue'>
-              <u>{password.other}</u>
-            </Typography>
-          </a>
-
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            <strong>Username:</strong> <br/>
-          </Typography>
-          <Typography variant="h6" color="textTertiary"
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between'
-          }} >
+            <Typography variant="h6" color="textTertiary"
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between'
+              }} >
               {password.username}
-              <IconButton aria-label='copy' size='small' sx={{ml:3}} onClick={handleCopyUsername}>
+              <IconButton aria-label='copy' size='small' sx={{ ml: 3 }} onClick={handleCopyUsername}>
                 <ContentCopyRoundedIcon />
               </IconButton>
-          </Typography>
+            </Typography>
 
-          <Typography variant="body1" sx={{ mt: 1 }}>
-            <strong>Password:</strong> <br/>
-          </Typography>
-          <Typography variant="h6" color="textTertiary"
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }} >
-            {showPassword ? password.password : "••••••••••"}
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              <strong>Password:</strong> <br />
+            </Typography>
+            <Typography variant="h6" color="textTertiary"
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }} >
+              {showPassword ? password.password : "••••••••••"}
               <Box>
                 <IconButton aria-label='view-password' size='small' onClick={handleTogglePassword}>
                   {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
                 </IconButton>
-                <IconButton aria-label='copy' size='small' sx={{ml:1}} onClick={handleCopyPassword}>
+                <IconButton aria-label='copy' size='small' sx={{ ml: 1 }} onClick={handleCopyPassword}>
                   <ContentCopyRoundedIcon />
                 </IconButton>
               </Box>
+            </Typography>
+
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={1400}
+              onClose={handleCloseSnackbar}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
+                {snackbarMessage}
+              </Alert>
+            </Snackbar>
+
+            {DialogComponent}
+
+          </>
+        ) : (
+
+          <Typography variant="body1">
+            Select an account to get started.
           </Typography>
 
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={1400}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          >
-            <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
-              {snackbarMessage}
-            </Alert>
-          </Snackbar>
-
-          {DialogComponent}
-
-        </>
-      ) : (
-
-        <Typography variant="body1">
-          Select an account to get started.
-        </Typography>
-
-      )}
-    </Box>
-  );
-}
+        )}
+      </Box>
+    );
+  }

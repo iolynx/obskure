@@ -17,7 +17,7 @@ export default function MainContent({ addMode, setAddMode }){
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPasswords = async () => {
+    async function fetchPasswords() {
       try {
         const result = await window.electronAPI.getPasswords();
         if (result.error) {
@@ -30,7 +30,7 @@ export default function MainContent({ addMode, setAddMode }){
         console.error('Error fetching passwords:', err);
         setError('An unexpected error occurred.');
       }
-    };
+    }
     fetchPasswords();
   }, []);
 

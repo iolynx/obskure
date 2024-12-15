@@ -1,14 +1,29 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import Search from './Search';
 import TitleBar from './TitleBar'
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, Tooltip, Button, Typography } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import { Divider } from '@mui/material';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import useSearchDialog from './useSearchDialog';
+import ReactSearchBox from "react-search-box";
 
 export default function Header({ onAddClick }) {
+
+  const { showDialog, SearchDialogComponent } = useSearchDialog();
+
+  const openSearchDialog = async () => {
+    // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
+
+    const userConfirmed = await showDialog();
+    if (userConfirmed) {
+      onDelete(password);
+      setResult(false);
+    }
+  }
+
+
   return (
     <Stack
       direction="row"
@@ -28,7 +43,7 @@ export default function Header({ onAddClick }) {
       }}
       spacing={2}
     >
-      <Stack direction="row" sx={{ gap: 5.8}}>
+      <Stack direction="row" sx={{ gap: 5.8 }}>
         <TitleBar />
 
         <Tooltip title="Add New Record">
@@ -36,13 +51,25 @@ export default function Header({ onAddClick }) {
             <AddRoundedIcon />
           </IconButton>
         </Tooltip>
-        <Search />
+        <Button variant='outlined' onClick={openSearchDialog}>
+          <SearchRoundedIcon fontSize='small'/>
+          &nbsp;
+          <Typography sx={{pr: 1, pl: 0}}>
+            Search
+          </Typography>
+          <Typography variant='caption' sx={{pl: 1, pr: 1, borderRadius: '5px', backgroundColor:'rgb(30, 41, 59)'}}>
+            Ctrl+K
+          </Typography>
+        </Button>
+        {/* <Search /> */}
       </Stack>
 
 
       <Stack direction="row" sx={{ gap: 1 }}>
         <ColorModeSelect />
       </Stack>
+
+      {SearchDialogComponent}
 
     </Stack>
   );

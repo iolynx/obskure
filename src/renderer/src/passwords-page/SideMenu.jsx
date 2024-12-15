@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MenuContent from './SideMenuContent';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Tooltip } from '@mui/material';
 import {Navigate, useNavigate} from 'react-router-dom';
 
 
@@ -66,9 +66,11 @@ export default function SideMenu() {
           </Typography>
         </Box>
 
-        <IconButton aria-label='LogoutRounded' size='small' onClick={logoutClicked}>
-          <LogoutRoundedIcon/>
-        </IconButton>
+        <Tooltip title='Logout'>
+          <IconButton aria-label='LogoutRounded' size='small' onClick={logoutClicked}>
+            <LogoutRoundedIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Drawer>
   );
