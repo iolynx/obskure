@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react'
 import { CssBaseline, Grid2 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AppTheme from './shared-theme/AppTheme';
@@ -24,7 +24,7 @@ const PWContainer = styled(Stack)(({ theme }) => ({
     ...theme.applyStyles('dark', {
       backgroundImage:
         // 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-        'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))',
+        'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))'
     }),
   },
 }));
@@ -57,24 +57,22 @@ export default function PasswordsPage(props) {
           spacing={2}
           direction="row"
           sx={{
-            alignItems:'center',
-            marginLeft: '-16px',
+            alignItems: 'center',
+            marginLeft: '-16px'
           }}
         >
-          <SideMenu/>
-          <Divider orientation='vertical'/>
+          <SideMenu />
+          <Divider orientation="vertical" />
           <Box
-              component="main"
-              // direction="column"
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                flexGrow: 1,
-                p: 0,
-                height: '100vh',
-                // backgroundImage: 'radial-gradient(at 50% 50%, hsla(110, 5%, 4%, 0.8), hsl(100, 3%, 3%))',
-              }}
-            >
+            component="main"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+              p: 0,
+              height: '100vh'
+            }}
+          >
             <Header onAddClick={handleAddClick} />
             <MainContent addMode={addMode} setAddMode={setAddMode} />
           </Box>

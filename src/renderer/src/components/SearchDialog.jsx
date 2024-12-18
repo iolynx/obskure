@@ -46,7 +46,7 @@ function SearchDialog({ open, handleClose, title, content, onConfirm}) {
         sx: { backgroundImage: 'none' },
       }}
     >
-      <DialogTitle>Password Search</DialogTitle>
+      <DialogTitle>Search Passwords</DialogTitle>
       <DialogContent
         sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', gap: 2, width: '100%', height:'300px'}}
       >

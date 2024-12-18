@@ -1,42 +1,40 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import { Paper, List, IconButton, Snackbar, Alert, CircularProgress, Tooltip } from '@mui/material';
-import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import React from 'react'
+import { useState } from 'react'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import ListItem from '@mui/material/ListItem'
+import { Paper, List, IconButton, Snackbar, Alert, Tooltip } from '@mui/material'
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 
-
-export default function PasswordsList({passwords, onPasswordSelect, error}) {
-  const [loading, setLoading] = useState(true);
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+export default function PasswordsList({ passwords, onPasswordSelect, error }) {
+  const [selectedIndex, setSelectedIndex] = React.useState(null)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
 
   const handleSelect = (index, password) => {
-    setSelectedIndex(index);
-    onPasswordSelect(password);
+    setSelectedIndex(index)
+    onPasswordSelect(password)
   }
 
   const handleCopy = (password) => {
-    navigator.clipboard.writeText(password)
-    .then(() => {
-      setSnackbarMessage('Password copied to clipboard!');
-      setSnackbarOpen(true);
-    })
-    .catch((err) => {
-      console.error('Failed to copy password: ', err);
-      setSnackbarMessage('Failed to copy password');
-      setSnackbarOpen(true);
-    });
-  };
+    navigator.clipboard
+      .writeText(password)
+      .then(() => {
+        setSnackbarMessage('Password copied to clipboard!')
+        setSnackbarOpen(true)
+      })
+      .catch((err) => {
+        console.error('Failed to copy password: ', err)
+        setSnackbarMessage('Failed to copy password')
+        setSnackbarOpen(true)
+      })
+  }
 
   const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
+    setSnackbarOpen(false)
+  }
 
   return (
     <Box
@@ -60,59 +58,70 @@ export default function PasswordsList({passwords, onPasswordSelect, error}) {
             alignItems: 'center',
             maxWidth: '100%',
             // borderTop: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'divider'
           }}
         >
-
           {passwords.map((password, index) => (
             <>
-            <ListItem
-              key={index}
-              button={true}
-              sx={{
-                justifyContent: 'space-between',
-                borderRadius: '10px',
-                pr: 1,
-                pl: 1,
-                backgroundColor: selectedIndex === index ? 'rgba(22, 25, 29, 0.6)' : 'transparent',
-                transition: 'background-color 0.2s',
-                // padding: '8px 16px'
-              }}
-              onClick={() => handleSelect(index, password)}
-            >
-              <Stack direction="column" spacing={-2}>
-                <Typography variant="body1" display="block" sx={{ fontWeight: 500, lineHeight: '16px',}}>
-                  {password.service}<br/>
-                </Typography>
-                <br/>
-                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                  {password.username}
-                </Typography>
-              </Stack>
-              <Box>
-                <Tooltip title='Copy Password'>
-                  <IconButton aria-label='copy' size='small'
-                    onClick={(e) => {e.stopPropagation(); handleCopy(password.password)}} >
-                    <ContentCopyRoundedIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </ListItem>
-            <Divider width='110%' />
+              <ListItem
+                key={index}
+                button={true}
+                sx={{
+                  justifyContent: 'space-between',
+                  borderRadius: '10px',
+                  pr: 1,
+                  pl: 1,
+                  backgroundColor:
+                    selectedIndex === index ? 'rgba(22, 25, 29, 0.6)' : 'transparent',
+                  transition: 'background-color 0.2s'
+                  // padding: '8px 16px'
+                }}
+                onClick={() => handleSelect(index, password)}
+              >
+                <Stack direction="column" spacing={-2}>
+                  <Typography
+                    variant="body1"
+                    display="block"
+                    sx={{ fontWeight: 500, lineHeight: '16px' }}
+                  >
+                    {password.service}
+                    <br />
+                  </Typography>
+                  <br />
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    {password.username}
+                  </Typography>
+                </Stack>
+                <Box>
+                  <Tooltip title="Copy Password">
+                    <IconButton
+                      aria-label="copy"
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleCopy(password.password)
+                      }}
+                    >
+                      <ContentCopyRoundedIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </ListItem>
+              <Divider width="110%" />
             </>
           ))}
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={1400}
-              onClose={handleCloseSnackbar}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-              <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
-                {snackbarMessage}
-              </Alert>
-            </Snackbar>
-          </List>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={1400}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
+        </List>
       )}
     </Box>
-  );
+  )
 }
