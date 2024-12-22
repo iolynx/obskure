@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import { IconButton, Tooltip  } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
@@ -68,123 +68,120 @@ export default function PasswordInfo({ password, onDelete }) {
     }
   }
 
-    const handleCloseConfirmation = () => {
-      setOpen(false);
-    };
+  const handleCloseConfirmation = () => {
+    setOpen(false);
+  };
 
 
-    return (
-      <Box
-        sx={{
-          flex: 1, // Allow it to stretch in the flex container
-          height: '100%', // Occupy full height
-          pt: 3,
-          pl: 3,
-          pr: 3,
-          overflow: 'hidden',
-        }}
-      >
-        {password ? (
-          <>
+  return (
+    <Box
+      sx={{
+        flex: 1, // Allow it to stretch in the flex container
+        height: '100%', // Occupy full height
+        pt: 3,
+        pl: 3,
+        pr: 3,
+        overflow: 'hidden',
+      }}
+    >
+      {password ? (
+        <>
 
 
+          <Box
+            sx={{
+              height: '50px',
+              display: 'flex'
+            }}>
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              {password.service}
+            </Typography>
             <Box
               sx={{
-                height: '50px',
-                display: 'flex'
+                width: '95%'
               }}>
-              <Typography variant="h4" sx={{ fontWeight: 600 }}>
-                {password.service}
-              </Typography>
-              <Box
-                sx={{
-                  width: '95%'
-                }}>
-              </Box>
-
-
-              <Tooltip title="Edit Record">
-                <IconButton aria-label="delete" size="small" sx={{ mr: 1 }}>
-                  <EditRoundedIcon />
-                </IconButton>
-              </Tooltip>
-
-
-              <Tooltip title="Delete Record">
-                <IconButton aria-label="delete" size="small" onClick={handleDelete}>
-                  <DeleteRoundedIcon />
-                </IconButton>
-              </Tooltip>
-
             </Box>
 
-            {password.other ? (
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                <strong>Website URL:</strong> <br />
-              </Typography>
-            ) : (<></>)
-            }
 
-            <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
-              <Typography button variant="h5" color='lightblue'>
-                <u>{password.other}</u>
-              </Typography>
-            </a>
-
-            <Typography variant="body1" sx={{ mt: 2 }}>
-              <strong>Username:</strong> <br />
-            </Typography>
-            <Typography variant="h6" color="textTertiary"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between'
-              }} >
-              {password.username}
-              <IconButton aria-label='copy' size='small' sx={{ ml: 3 }} onClick={handleCopyUsername}>
-                <ContentCopyRoundedIcon />
+            <Tooltip title="Edit Record">
+              <IconButton aria-label="delete" size="small" sx={{ mr: 1 }}>
+                <EditRoundedIcon />
               </IconButton>
-            </Typography>
+            </Tooltip>
 
+
+            <Tooltip title="Delete Record">
+              <IconButton aria-label="delete" size="small" onClick={handleDelete}>
+                <DeleteRoundedIcon />
+              </IconButton>
+            </Tooltip>
+
+          </Box>
+
+          {password.other ? (
             <Typography variant="body1" sx={{ mt: 1 }}>
-              <strong>Password:</strong> <br />
+              <strong>Website URL:</strong> <br />
             </Typography>
-            <Typography variant="h6" color="textTertiary"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }} >
-              {showPassword ? password.password : "••••••••••"}
-              <Box>
-                <IconButton aria-label='view-password' size='small' onClick={handleTogglePassword}>
-                  {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
-                </IconButton>
-                <IconButton aria-label='copy' size='small' sx={{ ml: 1 }} onClick={handleCopyPassword}>
-                  <ContentCopyRoundedIcon />
-                </IconButton>
-              </Box>
+          ) : (<></>)
+          }
+
+          <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
+            <Typography button variant="h5" color='lightblue'>
+              <u>{password.other}</u>
             </Typography>
+          </a>
 
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={1400}
-              onClose={handleCloseSnackbar}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-              <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
-                {snackbarMessage}
-              </Alert>
-            </Snackbar>
-
-            {DialogComponent}
-
-          </>
-        ) : (
-
-          <Typography variant="body1">
-            Select an account to get started.
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            <strong>Username:</strong> <br />
+          </Typography>
+          <Typography variant="h6" color="textTertiary"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }} >
+            {password.username}
+            <IconButton aria-label='copy' size='small' sx={{ ml: 3 }} onClick={handleCopyUsername}>
+              <ContentCopyRoundedIcon />
+            </IconButton>
           </Typography>
 
-        )}
-      </Box>
-    );
-  }
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            <strong>Password:</strong> <br />
+          </Typography>
+          <Typography variant="h6" color="textTertiary"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }} >
+            {showPassword ? password.password : "••••••••••"}
+            <Box>
+              <IconButton aria-label='view-password' size='small' onClick={handleTogglePassword}>
+                {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
+              </IconButton>
+              <IconButton aria-label='copy' size='small' sx={{ ml: 1 }} onClick={handleCopyPassword}>
+                <ContentCopyRoundedIcon />
+              </IconButton>
+            </Box>
+          </Typography>
+
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={1400}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
+
+          {DialogComponent}
+
+        </>
+      ) : (
+
+        <Typography variant="body1">Select an account to get started.</Typography>
+      )}
+    </Box>
+  );
+}
