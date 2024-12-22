@@ -10,9 +10,10 @@ $strength-gap: 6px;
 
 .strength-meter {
   position: relative;
-  height: 2px;
+  width: 80%;
+  height: 6px;
   background: #ddd;
-  margin: 7px 0;
+  margin: 18px 0;
   border-radius: 2px;
   overflow: hidden;
 
@@ -41,11 +42,12 @@ $strength-gap: 6px;
 
 .strength-meter-fill {
   background: transparent;
+  border-radius: 6px;
   height: inherit;
   position: absolute;
   width: 0;
   // border-radius: inherit;
-  transition: width 0.5s ease-in-out, background 0.25s;
+  transition: width 0.25s ease-in-out, background 0.15s;
 
   @for $i from 1 through 5 {
     &[data-strength="#{$i - 1}"] {
