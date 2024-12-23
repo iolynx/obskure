@@ -1,28 +1,25 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import Search from './Search';
+import * as React from 'react'
+import Stack from '@mui/material/Stack'
 import TitleBar from './TitleBar'
-import { IconButton, Tooltip, Button, Typography } from '@mui/material';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import useSearchDialog from './useSearchDialog';
-import ReactSearchBox from "react-search-box";
+import { IconButton, Tooltip, Button, Typography } from '@mui/material'
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import ColorModeSelect from '../shared-theme/ColorModeSelect'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import useSearchDialog from './useSearchDialog'
+import ReactSearchBox from 'react-search-box'
 
 export default function Header({ onAddClick }) {
-
-  const { showDialog, SearchDialogComponent } = useSearchDialog();
+  const { showDialog, SearchDialogComponent } = useSearchDialog()
 
   const openSearchDialog = async () => {
     // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
 
-    const userConfirmed = await showDialog();
+    const userConfirmed = await showDialog()
     if (userConfirmed) {
-      onDelete(password);
-      setResult(false);
+      onDelete(password)
+      setResult(false)
     }
   }
-
 
   return (
     <Stack
@@ -39,7 +36,7 @@ export default function Header({ onAddClick }) {
         paddingBottom: 1.5,
         borderBottom: '1px solid',
         borderRight: '1px solid',
-        borderColor: 'divider',
+        borderColor: 'divider'
       }}
       spacing={2}
     >
@@ -47,30 +44,28 @@ export default function Header({ onAddClick }) {
         <TitleBar />
 
         <Tooltip title="Add New Record">
-          <IconButton aria-label='plus' size='small' onClick={onAddClick}>
+          <IconButton aria-label="plus" size="small" onClick={onAddClick}>
             <AddRoundedIcon />
           </IconButton>
         </Tooltip>
-        <Button variant='outlined' onClick={openSearchDialog}>
-          <SearchRoundedIcon fontSize='small'/>
+        <Button variant="outlined" onClick={openSearchDialog}>
+          <SearchRoundedIcon fontSize="small" />
           &nbsp;
-          <Typography sx={{pr: 1, pl: 0}}>
-            Search
-          </Typography>
-          <Typography variant='caption' sx={{pl: 1, pr: 1, borderRadius: '5px', backgroundColor:'rgb(30, 41, 59)'}}>
+          <Typography sx={{ pr: 1, pl: 0 }}>Search</Typography>
+          <Typography
+            variant="caption"
+            sx={{ pl: 1, pr: 1, borderRadius: '5px', backgroundColor: 'rgb(30, 41, 59)' }}
+          >
             Ctrl+K
           </Typography>
         </Button>
-        {/* <Search /> */}
       </Stack>
-
 
       <Stack direction="row" sx={{ gap: 1 }}>
         <ColorModeSelect />
       </Stack>
 
       {SearchDialogComponent}
-
     </Stack>
-  );
+  )
 }
