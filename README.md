@@ -1,6 +1,7 @@
 # Obskure
 
-An Electron + React Password Manager
+An Electron + React Password Manager <br/>
+
 ![image](https://github.com/user-attachments/assets/1f8b0983-c4ea-43bd-b34e-1eb8f0c15132)
 
 
