@@ -2,6 +2,9 @@
 
 An Electron + React Password Manager
 
+![image](https://github.com/user-attachments/assets/9775f282-e8b2-408f-b4e3-4222231d3896)
+
+
 ## Project Setup
 
 ### Install
