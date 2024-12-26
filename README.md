@@ -1,8 +1,7 @@
 # Obskure
 
 An Electron + React Password Manager
-
-![image](https://github.com/user-attachments/assets/9775f282-e8b2-408f-b4e3-4222231d3896)
+![image](https://github.com/user-attachments/assets/1f8b0983-c4ea-43bd-b34e-1eb8f0c15132)
 
 
 ## Project Setup
