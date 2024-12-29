@@ -1,0 +1,3 @@
+- add search tools
+- add folder support
+- fix other menu types

@@ -51,7 +51,7 @@ export default function PasswordsPage(props) {
 
   return (
     <AppTheme {...props}>
-      <CssBaseline  />
+      <CssBaseline />
       <PWContainer>
         <Stack
           spacing={2}

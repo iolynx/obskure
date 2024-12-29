@@ -76,7 +76,8 @@ export default function PasswordInfo({ password, onDelete }) {
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
 
   useEffect(() => {
-    if (password !== null) {
+    console.log(password)
+    if (password && password.password) {
       const score = zxcvbn(password.password).score
       setStrength(score)
     }

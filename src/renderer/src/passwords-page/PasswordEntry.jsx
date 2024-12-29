@@ -1,43 +1,41 @@
-import { TextField, Input } from "@mui/material";
-import { useState } from "react";
-import { Button, Box, Typography } from "@mui/material";
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
-import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
-import CustomSnackBar from '../components/CustomSnackbar';
+import { TextField, Input } from '@mui/material'
+import { useState } from 'react'
+import { Button, Box, Typography } from '@mui/material'
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded'
+import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded'
+import CustomSnackBar from '../components/CustomSnackbar'
 
 export default function PasswordEntry({ onAddition }) {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [newPassword, setNewPassword] = useState({
     service: '',
     username: '',
     password: '',
     other: ''
-  });
+  })
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewPassword((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setNewPassword((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSave = () => {
-    console.log('New Password Entry:', newPassword);
-  };
+    console.log('New Password Entry:', newPassword)
+  }
 
   const handleSubmit = (event) => {
-    handleSave();
-    event.preventDefault();
-    onAddition(newPassword);
+    handleSave()
+    event.preventDefault()
+    onAddition(newPassword)
   }
 
   const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
+    setSnackbarOpen(false)
+  }
 
   return (
-
     <Box
       component="form"
       onSubmit={handleSubmit}
@@ -48,10 +46,9 @@ export default function PasswordEntry({ onAddition }) {
         pt: 3,
         pl: 3,
         pr: 3,
-        overflow:'hidden',
+        overflow: 'hidden'
       }}
     >
-
       <Typography variant="h4" sx={{ fontWeight: 600 }}>
         Add a new Password
       </Typography>
@@ -63,22 +60,22 @@ export default function PasswordEntry({ onAddition }) {
         onChange={handleChange}
         margin="normal"
         sx={{
-          mt:3,
-          ml:1,
+          mt: 3,
+          ml: 1
         }}
       />
 
       <Box
         sx={{
           height: '20px'
-        }}>
-      </Box>
+        }}
+      ></Box>
 
       {/* <Typography variant="body1" sx={{ mt: 1 }}>
         <strong>Website URL:</strong> <br />
       </Typography> */}
 
-      <LanguageRoundedIcon sx={{position:'relative', top:'6px'}} />
+      <LanguageRoundedIcon sx={{ position: 'relative', top: '6px' }} />
 
       <Input
         label="URL"
@@ -88,15 +85,14 @@ export default function PasswordEntry({ onAddition }) {
         onChange={handleChange}
         margin="normal"
         sx={{
-          transformOrigin:3,
-          ml:1
+          transformOrigin: 3,
+          ml: 1
         }}
       />
-      <br/>
-      <br/>
+      <br />
+      <br />
 
-
-      <AccountCircleRoundedIcon  sx={{position:'relative', top:'7px'}}/>
+      <AccountCircleRoundedIcon sx={{ position: 'relative', top: '7px' }} />
       <Input
         label="Username"
         placeholder="Username"
@@ -105,13 +101,14 @@ export default function PasswordEntry({ onAddition }) {
         onChange={handleChange}
         margin="normal"
         sx={{
-          ml:1
+          ml: 1
         }}
       />
 
-      <br/><br/>
+      <br />
+      <br />
 
-      <LockOpenRoundedIcon sx={{position:'relative', top:'7px'}} />
+      <LockOpenRoundedIcon sx={{ position: 'relative', top: '7px' }} />
       <Input
         label="Password"
         name="password"
@@ -121,20 +118,21 @@ export default function PasswordEntry({ onAddition }) {
         type="password"
         margin="normal"
         sx={{
-          ml:1
+          ml: 1
         }}
       />
 
-      <br/><br/>
+      <br />
+      <br />
 
-    <Button type="submit" variant="outlined" onClick={handleSave} sx={{ mt: 2 }}>
-      Save
-    </Button>
-    <CustomSnackBar
-      snackbarOpen={snackbarOpen}
-      snackbarMessage={snackbarMessage}
-      onClose={handleCloseSnackbar}
-    />
-  </Box>
-  );
+      <Button type="submit" variant="outlined" onClick={handleSave} sx={{ mt: 2 }}>
+        Save
+      </Button>
+      <CustomSnackBar
+        snackbarOpen={snackbarOpen}
+        snackbarMessage={snackbarMessage}
+        onClose={handleCloseSnackbar}
+      />
+    </Box>
+  )
 }

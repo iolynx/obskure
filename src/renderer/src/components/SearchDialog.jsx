@@ -5,9 +5,27 @@ import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, TextField, List } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+const StyledList = styled(List)(({ theme }) => ({
+  backgroundColor: '#0d0d0d',
+  border: '1px solid #303746',
+  borderRadius: '12px',
+  maxHeight: '200px', // Limit the height if necessary
+  overflowY: 'auto',
+  '& .MuiAutocomplete-option': {
+    fontSize: '14px',
+    padding: '12px',
+    '&:hover': {
+      backgroundColor: '#161a23'
+    },
+    '&[aria-selected="true"]': {
+      backgroundColor: theme.palette.action.selected
+    }
+  }
+}))
 
 // eslint-disable-next-line react/prop-types
 function SearchDialog({ open, handleClose, title, content, onConfirm, passwords }) {
@@ -64,10 +82,14 @@ function SearchDialog({ open, handleClose, title, content, onConfirm, passwords 
           value={selectedValue}
           onChange={handleSelectionChange}
           placeholder="test"
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} autoFocus placeholder="Search" margin="normal" sx={{ mt: 3 }} />
-          )}
+          sx={{
+            width: 300
+          }}
+          ListboxComponent={(props) => <StyledList {...props} />} // Use StyledList as Listbox
+          renderInput={(params) => <TextField {...params} placeholder="Search Passwords" />}
+        // renderInput={(params) => (
+        //   <TextField {...params} autoFocus placeholder="Search" margin="normal" sx={{ mt: 1 }} />
+        // )}
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
