@@ -11,10 +11,11 @@ import { styled } from '@mui/material/styles'
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: '#0d0d0d',
-  border: '1px solid #303746',
+  border: '2px solid #303746',
   borderRadius: '12px',
   maxHeight: '200px', // Limit the height if necessary
-  overflowY: 'auto',
+  minHeight: '100px',
+  overflowY: 'scroll',
   '& .MuiAutocomplete-option': {
     fontSize: '14px',
     padding: '12px',
@@ -83,18 +84,42 @@ function SearchDialog({ open, handleClose, title, content, onConfirm, passwords 
           onChange={handleSelectionChange}
           placeholder="test"
           sx={{
-            width: 300
+            width: 300,
+            '& + .MuiAutocomplete-popper .MuiAutocomplete-option': {
+              '&:hover': {
+                backgroundColor: '#161a23'
+              },
+              // backgroundColor: '#0d0d0d'  alternate background color
+              backgroundColor: '#121212'
+            },
+            '& + .MuiAutocomplete-popper': {
+              '&::-webkit-scrollbar': {
+                display: 'none'
+              },
+              scrollbarWidth: 'thin',
+              border: '2px solid #303746',
+              borderRadius: '10px',
+              scrollbarColor: '#8897b3 #121212'
+            }
           }}
-          ListboxComponent={(props) => <StyledList {...props} />} // Use StyledList as Listbox
-          renderInput={(params) => <TextField {...params} placeholder="Search Passwords" />}
-        // renderInput={(params) => (
-        //   <TextField {...params} autoFocus placeholder="Search" margin="normal" sx={{ mt: 1 }} />
-        // )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: null // Removes the clear "x" button
+              }}
+              autoFocus
+              placeholder="Search"
+              margin="normal"
+              sx={{ mt: 1 }}
+            />
+          )}
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button variant="contained" type="submit" onClick={handleConfirm}>
-          Yes
+          Go
         </Button>
         <Button onClick={handleCancel}>Cancel</Button>
       </DialogActions>
