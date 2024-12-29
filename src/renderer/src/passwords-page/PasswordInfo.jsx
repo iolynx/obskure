@@ -150,9 +150,16 @@ export default function PasswordInfo({ password, onDelete }) {
             }}
           >
             {password.username}
-            <IconButton aria-label="copy" size="small" sx={{ ml: 3 }} onClick={handleCopyUsername}>
-              <ContentCopyRoundedIcon />
-            </IconButton>
+            <Tooltip title="Show Username">
+              <IconButton
+                aria-label="copy"
+                size="small"
+                sx={{ ml: 3 }}
+                onClick={handleCopyUsername}
+              >
+                <ContentCopyRoundedIcon />
+              </IconButton>
+            </Tooltip>
           </Typography>
 
           <Typography variant="body1" sx={{ mt: 1 }}>
@@ -168,17 +175,21 @@ export default function PasswordInfo({ password, onDelete }) {
           >
             {showPassword ? password.password : '••••••••••'}
             <Box>
-              <IconButton aria-label="view-password" size="small" onClick={handleTogglePassword}>
-                {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
-              </IconButton>
-              <IconButton
-                aria-label="copy"
-                size="small"
-                sx={{ ml: 1 }}
-                onClick={handleCopyPassword}
-              >
-                <ContentCopyRoundedIcon />
-              </IconButton>
+              <Tooltip title="Show Password">
+                <IconButton aria-label="view-password" size="small" onClick={handleTogglePassword}>
+                  {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Copy Password">
+                <IconButton
+                  aria-label="copy"
+                  size="small"
+                  sx={{ ml: 1 }}
+                  onClick={handleCopyPassword}
+                >
+                  <ContentCopyRoundedIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Typography>
 
