@@ -1,10 +1,9 @@
-# electron-app-with-vite
+# Obskure
 
-An Electron application with React
+An Electron + React Password Manager <br/>
 
-## Recommended IDE Setup
+![image](https://github.com/user-attachments/assets/1f8b0983-c4ea-43bd-b34e-1eb8f0c15132)
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ## Project Setup
 
