@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid2'
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import { Snackbar, Alert } from '@mui/material'
-import Typography from '@mui/material/Typography'
 import PasswordInfo from './PasswordInfo'
 import PasswordsList from './PasswordsList'
 import PasswordEntry from './PasswordEntry'
+import PasswordEdit from './PasswordEdit'
 
 export default function MainContent({ addMode, setAddMode }) {
   const [passwords, setPasswords] = useState([])
@@ -14,6 +12,7 @@ export default function MainContent({ addMode, setAddMode }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [error, setError] = useState(null)
+  const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
     async function fetchPasswords() {
@@ -36,6 +35,7 @@ export default function MainContent({ addMode, setAddMode }) {
   const handlePasswordSelect = (password) => {
     setSelectedPassword(password)
     setAddMode(false)
+    setEditMode(false)
   }
 
   const handlePasswordDelete = async (password) => {
@@ -68,6 +68,11 @@ export default function MainContent({ addMode, setAddMode }) {
     })
   }
 
+  const handlePasswordEdit = async () => {
+    // take editedpassword
+    // replace the edited password with the old one
+    // using the api
+  }
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false)
   }
@@ -108,8 +113,15 @@ export default function MainContent({ addMode, setAddMode }) {
       >
         {addMode ? (
           <PasswordEntry onAddition={handlePasswordAddition} />
+        ) : editMode ? (
+          <PasswordEdit onEdit={handlePasswordEdit} password={selectedPassword} />
         ) : (
-          <PasswordInfo password={selectedPassword} onDelete={handlePasswordDelete} />
+          <PasswordInfo
+            password={selectedPassword}
+            onDelete={handlePasswordDelete}
+            editMode={editMode}
+            setEditMode={setEditMode}
+          />
         )}
       </Box>
 

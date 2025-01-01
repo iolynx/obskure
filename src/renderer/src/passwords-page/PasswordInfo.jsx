@@ -13,13 +13,13 @@ import useConfirmation from './useConfirmation'
 import zxcvbn from 'zxcvbn'
 import '../assets/main.scss'
 
-export default function PasswordInfo({ password, onDelete }) {
+export default function PasswordInfo({ password, onDelete, editMode, setEditMode }) {
   const [showPassword, setShowPassword] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [result, setResult] = useState(false)
   const [strength, setStrength] = useState(0)
   const { showDialog, DialogComponent } = useConfirmation()
+  const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev)
@@ -57,10 +57,6 @@ export default function PasswordInfo({ password, onDelete }) {
     setSnackbarOpen(false)
   }
 
-  const handleResult = (val) => {
-    setResult(val)
-  }
-
   const handleDelete = async () => {
     // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
     const userConfirmed = await showDialog(
@@ -69,11 +65,12 @@ export default function PasswordInfo({ password, onDelete }) {
     )
     if (userConfirmed) {
       onDelete(password)
-      setResult(false)
     }
   }
 
-  const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
+  const handleEdit = () => {
+    setEditMode(!editMode)
+  }
 
   useEffect(() => {
     console.log(password)
@@ -112,7 +109,7 @@ export default function PasswordInfo({ password, onDelete }) {
             ></Box>
 
             <Tooltip title="Edit Record">
-              <IconButton aria-label="delete" size="small" sx={{ mr: 1 }}>
+              <IconButton aria-label="delete" size="small" sx={{ mr: 1 }} onClick={handleEdit}>
                 <EditRoundedIcon />
               </IconButton>
             </Tooltip>
@@ -150,7 +147,7 @@ export default function PasswordInfo({ password, onDelete }) {
             }}
           >
             {password.username}
-            <Tooltip title="Show Username">
+            <Tooltip title="Copy Username">
               <IconButton
                 aria-label="copy"
                 size="small"

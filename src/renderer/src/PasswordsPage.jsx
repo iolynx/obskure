@@ -7,7 +7,7 @@ import SideMenu from './passwords-page/SideMenu'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Header from './components/Header'
-import MainContent from './passwords-page/mainContent'
+import MainContent from './passwords-page/MainContent'
 import { useState } from 'react'
 
 const PWContainer = styled(Stack)(({ theme }) => ({
