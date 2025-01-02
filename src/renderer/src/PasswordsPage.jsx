@@ -67,7 +67,8 @@ export default function PasswordsPage(props) {
             }}
           >
             <Header onAddClick={handleAddClick} />
-            <MainContent addMode={addMode} setAddMode={setAddMode} />
+            <MainContent addMode={addMode} setAddMode={setAddMode} />{' '}
+            {/* add passwordgroup: all/foldername type shi */}
           </Box>
         </Stack>
       </PWContainer>

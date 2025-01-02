@@ -1,9 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path';
+import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 function createWindow() {
   // Create the browser window.
@@ -72,57 +72,58 @@ app.on('window-all-closed', () => {
   }
 })
 
-
-function readPasswordsFile(){
-  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
-  if(!fs.existsSync(passwordsFilePath)){
-    return [];
+function readPasswordsFile() {
+  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json')
+  if (!fs.existsSync(passwordsFilePath)) {
+    return []
   }
-  const data = fs.readFileSync(passwordsFilePath, 'utf8');
-  return JSON.parse(data);
+  const data = fs.readFileSync(passwordsFilePath, 'utf8')
+  return JSON.parse(data)
 }
 
-function writePasswordsFile(passwords){
-  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json');
+function writePasswordsFile(passwords) {
+  const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json')
   const newPasswordJSON = JSON.stringify(passwords)
-  fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8');
+  fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8')
 }
 
 ipcMain.handle('get-passwords', async () => {
   try {
-    return readPasswordsFile();
+    return readPasswordsFile()
   } catch (error) {
-    console.error('Error reading passwords file:', error);
-    return { error: 'Failed to load passwords' };
+    console.error('Error reading passwords file:', error)
+    return { error: 'Failed to load passwords' }
   }
-});
+})
 
 ipcMain.handle('save-password', async (event, newPassword) => {
-  try{
+  try {
     // Write the passwords to the file
-    const passwords = readPasswordsFile();
+    const passwords = readPasswordsFile()
     passwords.push(newPassword)
-    writePasswordsFile(passwords);
-    return { success: true, newPasswords: passwords };
+    writePasswordsFile(passwords)
+    return { success: true, newPasswords: passwords }
   } catch (error) {
-    console.error('Error saving passwords:', error);
-    return { success: false, error };
+    console.error('Error saving passwords:', error)
+    return { success: false, error }
   }
 })
 
 ipcMain.handle('delete-password', async (event, passwordToDelete) => {
-  try{
-    const passwords = readPasswordsFile();
+  try {
+    const passwords = readPasswordsFile()
     // passwords.delete(passwordToDelete);
     // let res = jData.filter(obj => obj.Name !== passwordToDelete.username);
     const updatedPasswords = passwords.filter(
-      (entry) => !(entry.service === passwordToDelete.service && entry.username === passwordToDelete.username)
-    );
-    writePasswordsFile(updatedPasswords);
-    return { success: true, remainingEntries: updatedPasswords };
+      (entry) =>
+        !(
+          entry.service === passwordToDelete.service && entry.username === passwordToDelete.username
+        )
+    )
+    writePasswordsFile(updatedPasswords)
+    return { success: true, remainingEntries: updatedPasswords }
   } catch (error) {
-    console.error('Error deleting password', error);
-    return { success: false, error: error};
+    console.error('Error deleting password', error)
+    return { success: false, error: error }
   }
 })
-

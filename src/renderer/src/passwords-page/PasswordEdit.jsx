@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
-import { Box, Typography, Tooltip, IconButton, Button } from '@mui/material'
-import { Input, InputBase, TextField, InputAdornment } from '@mui/material'
+import { Box, Typography, IconButton, Button } from '@mui/material'
+import { Input, InputBase, InputAdornment } from '@mui/material'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
 import zxcvbn from 'zxcvbn'
@@ -30,6 +30,29 @@ export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
   const [strength, setStrength] = useState(0)
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
+  const [newPassword, setNewPassword] = useState({
+    service: password.service,
+    username: password.username,
+    password: password.password,
+    other: password.other
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    console.log('cool shit being changed')
+    setNewPassword((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = (e) => {
+    console.log('Edited Password: ', newPassword)
+    e.preventDefault()
+    onEdit(newPassword, password)
+  }
+
+  const handleExit = (e) => {
+    e.preventDefault()
+    onEdit(null, password)
+  }
 
   const handleTogglePassword = (event) => {
     event.preventDefault()
@@ -47,8 +70,8 @@ export default function PasswordEdit({ onEdit, password }) {
   return (
     <Box
       sx={{
-        flex: 1, // Allow it to stretch in the flex container
-        height: '100%', // Occupy full height
+        flex: 1,
+        height: '100%',
         pt: 2,
         pl: 3,
         pr: 3,
@@ -65,7 +88,7 @@ export default function PasswordEdit({ onEdit, password }) {
           name="service"
           placeholder="Service Name"
           defaultValue={password.service}
-          // onChange={handleChange}
+          onChange={handleChange}
           variant="outlined"
           margin="none"
           fullWidth
@@ -77,12 +100,6 @@ export default function PasswordEdit({ onEdit, password }) {
             }
           }}
         />
-
-        <Box
-          sx={{
-            width: '95%'
-          }}
-        ></Box>
       </Box>
 
       <Typography variant="body1" sx={{ mt: 2 }}>
@@ -93,7 +110,7 @@ export default function PasswordEdit({ onEdit, password }) {
         name="other"
         placeholder="URL"
         defaultValue={password.other}
-        // onChange={handleChange}
+        onChange={handleChange}
         sx={{
           fontSize: '20px'
         }}
@@ -107,7 +124,7 @@ export default function PasswordEdit({ onEdit, password }) {
         name="username"
         placeholder="Username"
         defaultValue={password.username}
-        // onChange={handleChange}
+        onChange={handleChange}
         sx={{
           mt: 0,
           fontSize: '18px'
@@ -123,7 +140,7 @@ export default function PasswordEdit({ onEdit, password }) {
         placeholder="Password"
         type={showPassword ? 'text' : 'password'}
         defaultValue={password.password}
-        // onChange={handleChange}
+        onChange={handleChange}
         variant="outlined"
         sx={{
           input: {
@@ -152,12 +169,18 @@ export default function PasswordEdit({ onEdit, password }) {
         }
       />
 
-      <Typography>Password Strength:</Typography>
+      <Typography sx={{ mt: 1 }}>Password Strength:</Typography>
       <div className={strengthClass}>
         <div className="strength-meter-fill" data-strength={strength}></div>
       </div>
 
-      <Button onClick={onEdit}>Save Changes</Button>
+      {/* is greyed out until changes are made */}
+      <Button variant="outlined" onClick={handleSubmit} sx={{ margin: '10px' }}>
+        Save Changes
+      </Button>
+      <Button variant="outlined" onClick={handleExit}>
+        Cancel
+      </Button>
     </Box>
   )
 }

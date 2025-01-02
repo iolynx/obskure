@@ -28,7 +28,9 @@ export default function PasswordEntry({ onAddition }) {
   const handleSubmit = (event) => {
     handleSave()
     event.preventDefault()
-    onAddition(newPassword)
+    if (newPassword.service !== '') {
+      onAddition(newPassword)
+    }
   }
 
   const handleCloseSnackbar = () => {
@@ -41,8 +43,8 @@ export default function PasswordEntry({ onAddition }) {
       onSubmit={handleSubmit}
       noValidate
       sx={{
-        flex: 1, // Allow it to stretch in the flex container
-        height: '100%', // Occupy full height
+        flex: 1,
+        height: '100%',
         pt: 3,
         pl: 3,
         pr: 3,

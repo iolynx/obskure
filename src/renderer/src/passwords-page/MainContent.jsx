@@ -68,7 +68,34 @@ export default function MainContent({ addMode, setAddMode }) {
     })
   }
 
-  const handlePasswordEdit = async () => {
+  const handlePasswordEdit = async (newPassword, oldPassword) => {
+    setEditMode(false)
+
+    if (newPassword === null) {
+      console.log('no changes bro')
+      setSelectedPassword(oldPassword)
+      return
+    }
+
+    window.electronAPI.deletePassword(oldPassword).then((response) => {
+      if (response.success) {
+        window.electronAPI.savePassword(newPassword).then((response) => {
+          if (response.success) {
+            setSnackbarMessage('Password saved successfully')
+            setSnackbarOpen(true)
+            setPasswords(response.newPasswords)
+            setSelectedPassword(newPassword)
+          } else {
+            setSnackbarMessage('Error: Could not save Password')
+            setSnackbarOpen(true)
+            console.log(response.error)
+          }
+        })
+      } else {
+        setSnackbarMessage('Error: Could not save Password')
+      }
+    })
+
     // take editedpassword
     // replace the edited password with the old one
     // using the api
