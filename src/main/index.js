@@ -2,6 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { object } from 'prop-types'
+import PasswordEdit from '../renderer/src/passwords-page/PasswordEdit'
 const fs = require('fs')
 const path = require('path')
 
@@ -87,41 +89,73 @@ function writePasswordsFile(passwords) {
   fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8')
 }
 
-ipcMain.handle('get-passwords', async () => {
+ipcMain.handle('get-passwords', async (event, folder) => {
   try {
-    return readPasswordsFile()
+    const passwords = readPasswordsFile()
+    console.log('folder: ', folder)
+    console.log('passwords: ', passwords)
+    if (folder == 'All') {
+      return Object.values(passwords).flat()
+    } else if (passwords[folder]) {
+      console.log('Passwords in ', folder, 'are : ', passwords[folder])
+      return passwords[folder]
+    }
   } catch (error) {
     console.error('Error reading passwords file:', error)
     return { error: 'Failed to load passwords' }
   }
 })
 
-ipcMain.handle('save-password', async (event, newPassword) => {
+ipcMain.handle('get-folders', async () => {
+  try {
+    const passwords = readPasswordsFile()
+    const folders = Object.keys(passwords)
+    console.log('Folders: ', folders)
+    return folders
+    // dont read foldersfile, read passwords and check for the number of objects each object is a folder
+  } catch (error) {
+    console.error('Error reading folders file: ', error)
+    return { error: 'Failed to load Folders' }
+  }
+})
+
+ipcMain.handle('create-folder', async (event, newFolder) => {
+  try {
+    const passwords = readPasswordsFile()
+    if (!passwords[newFolder]) {
+      passwords[newFolder] = []
+      writePasswordsFile(passwords)
+    } else {
+      return { error: 'Error: Folder already exists' }
+    }
+  } catch (error) {
+    console.error('Error creating extra folder: ', error)
+    return { error: 'Failed to create folder.' }
+  }
+})
+
+ipcMain.handle('save-password', async (event, newPassword, folder) => {
   try {
     // Write the passwords to the file
     const passwords = readPasswordsFile()
-    passwords.push(newPassword)
+    console.log('Saving password to folder ', folder)
+    passwords[folder].push(newPassword)
     writePasswordsFile(passwords)
-    return { success: true, newPasswords: passwords }
+    return { success: true, newPasswords: passwords[folder] }
   } catch (error) {
     console.error('Error saving passwords:', error)
     return { success: false, error }
   }
 })
 
-ipcMain.handle('delete-password', async (event, passwordToDelete) => {
+ipcMain.handle('delete-password', async (event, passwordToDelete, folder) => {
   try {
     const passwords = readPasswordsFile()
-    // passwords.delete(passwordToDelete);
-    // let res = jData.filter(obj => obj.Name !== passwordToDelete.username);
-    const updatedPasswords = passwords.filter(
-      (entry) =>
-        !(
-          entry.service === passwordToDelete.service && entry.username === passwordToDelete.username
-        )
+    passwords[folder] = passwords[folder].filter(
+      (item) => item.service !== passwordToDelete.service
     )
-    writePasswordsFile(updatedPasswords)
-    return { success: true, remainingEntries: updatedPasswords }
+    writePasswordsFile(passwords)
+    return { success: true, remainingEntries: passwords[folder] }
   } catch (error) {
     console.error('Error deleting password', error)
     return { success: false, error: error }

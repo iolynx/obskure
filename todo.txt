@@ -1,3 +1,4 @@
 - add search tools
 - add folder support
+ - add folder schema
 - fix other menu types
