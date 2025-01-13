@@ -6,14 +6,15 @@ import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded'
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded'
 import CustomSnackBar from '../components/CustomSnackbar'
 
-export default function PasswordEntry({ onAddition }) {
+export default function PasswordEntry({ onAddition, curFolder }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [newPassword, setNewPassword] = useState({
-    service: '',
+    service: curFolder === 'All' ? '' : curFolder,
     username: '',
     password: '',
-    other: ''
+    other: '',
+    alias: null
   })
 
   const handleChange = (e) => {
@@ -55,17 +56,23 @@ export default function PasswordEntry({ onAddition }) {
         Add a new Password
       </Typography>
 
-      <TextField
-        name="service"
-        placeholder="Service Name"
-        value={newPassword.service}
-        onChange={handleChange}
-        margin="normal"
-        sx={{
-          mt: 3,
-          ml: 1
-        }}
-      />
+      {curFolder === 'All' ? (
+        <TextField
+          name="service"
+          placeholder="Service Name"
+          value={newPassword.service}
+          onChange={handleChange}
+          margin="normal"
+          sx={{
+            mt: 3,
+            ml: 1
+          }}
+        />
+      ) : (
+        <Typography variant="h3" sx={{ mt: 2 }}>
+          {curFolder}
+        </Typography>
+      )}
 
       <Box
         sx={{
@@ -77,6 +84,23 @@ export default function PasswordEntry({ onAddition }) {
         <strong>Website URL:</strong> <br />
       </Typography> */}
 
+      {curFolder !== 'All' ? (
+        <TextField
+          placeholder="Alias (Optional)"
+          name="alias"
+          value={newPassword.alias}
+          onChange={handleChange}
+          margin="normal"
+          sx={{
+            transformOrigin: 3,
+            ml: 1
+          }}
+        />
+      ) : (
+        <></>
+      )}
+
+      <br />
       <LanguageRoundedIcon sx={{ position: 'relative', top: '6px' }} />
 
       <Input

@@ -13,7 +13,7 @@ import useConfirmation from './useConfirmation'
 import zxcvbn from 'zxcvbn'
 import '../assets/main.scss'
 
-export default function PasswordInfo({ password, onDelete, editMode, setEditMode }) {
+export default function PasswordInfo({ password, onDelete, editMode, setEditMode, curFolder }) {
   const [showPassword, setShowPassword] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -40,6 +40,8 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   }
 
   const handleCopyUsername = () => {
+    console.log(password)
+    console.log(curFolder)
     navigator.clipboard
       .writeText(password.username)
       .then(() => {
@@ -49,6 +51,20 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
       .catch((err) => {
         console.error('Failed to copy Username: ', err)
         setSnackbarMessage('Failed to copy Username')
+        setSnackbarOpen(true)
+      })
+  }
+
+  const handleCopyAlias = () => {
+    navigator.clipboard
+      .writeText(password.alias)
+      .then(() => {
+        setSnackbarMessage('Alias copied to clipboard!')
+        setSnackbarOpen(true)
+      })
+      .catch((err) => {
+        console.error('Alias to copy Username: ', err)
+        setSnackbarMessage('Failed to copy Alias')
         setSnackbarOpen(true)
       })
   }
@@ -93,33 +109,58 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
     >
       {password ? (
         <>
-          <Box
-            sx={{
-              height: '50px',
-              display: 'flex'
-            }}
-          >
-            <Typography variant="h4" sx={{ fontWeight: 600 }}>
-              {password.service}
-            </Typography>
+          {curFolder === 'All' ? (
             <Box
               sx={{
-                width: '95%'
+                height: '50px',
+                display: 'flex'
               }}
-            ></Box>
+            >
+              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                {password.service}
+              </Typography>
 
-            <Tooltip title="Edit Record">
-              <IconButton aria-label="delete" size="small" sx={{ mr: 1 }} onClick={handleEdit}>
-                <EditRoundedIcon />
-              </IconButton>
-            </Tooltip>
+              <Box
+                sx={{
+                  width: '95%'
+                }}
+              ></Box>
 
-            <Tooltip title="Delete Record">
-              <IconButton aria-label="delete" size="small" onClick={handleDelete}>
-                <DeleteRoundedIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
+              <Tooltip title="Edit Record">
+                <IconButton aria-label="delete" size="small" sx={{ mr: 1 }} onClick={handleEdit}>
+                  <EditRoundedIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Delete Record">
+                <IconButton aria-label="delete" size="small" onClick={handleDelete}>
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          ) : (
+            <></>
+          )}
+
+          {password.alias ? (
+            <Typography
+              variant="h4"
+              color="textTertiary"
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between'
+              }}
+            >
+              &quot;{password.alias}&quot;
+              <Tooltip title="Copy Alias">
+                <IconButton aria-label="copy" size="small" sx={{ ml: 3 }} onClick={handleCopyAlias}>
+                  <ContentCopyRoundedIcon />
+                </IconButton>
+              </Tooltip>
+            </Typography>
+          ) : (
+            <></>
+          )}
 
           {password.other ? (
             <Typography variant="body1" sx={{ mt: 1 }}>

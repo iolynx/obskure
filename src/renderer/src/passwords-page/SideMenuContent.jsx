@@ -135,18 +135,19 @@ export default function SideMenuContent({ curFolder, setCurFolder }) {
               sx={{ height: '32px' }}
             >
               <ListItemText primary={item} />
-              <IconButton
+              <Button
                 onClick={() => deleteFolder(item)}
+                variant="none"
                 className="hover-icon"
                 sx={{
                   opacity: 0,
                   visibility: 'hidden',
                   transition: 'opacity 0.1s, visibility 0.1s',
-                  scale: 0.8
+                  scale: 1
                 }}
               >
                 <DeleteRoundedIcon />
-              </IconButton>
+              </Button>
             </ListItemButton>
           </ListItem>
         ))}

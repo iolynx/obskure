@@ -10,8 +10,14 @@ design:
 fix scrollbars
 
 design:
-- add popups when adding folders fails
 - show copy icon only when hover on password in passwordlist
-- add notes for each password
-- add renaming folders
+- add renaming folders (just click on the folder name to rename it)
+- make the line line thingies into the oval thingies (input)
+- move edit and delete buttons for password info to the bottom
+
+
+for tomorrow asap:
+- add customized edit for folder-fields and normal fields
+- add popups when adding folders fails
 - ask password before deleting
+- add notes for each password

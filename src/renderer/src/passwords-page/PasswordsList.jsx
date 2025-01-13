@@ -8,7 +8,7 @@ import ListItem from '@mui/material/ListItem'
 import { Paper, List, IconButton, Snackbar, Alert, Tooltip } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 
-export default function PasswordsList({ passwords, onPasswordSelect, error }) {
+export default function PasswordsList({ passwords, onPasswordSelect, error, curFolder }) {
   const [selectedIndex, setSelectedIndex] = React.useState(null)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -84,7 +84,8 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
                     display="block"
                     sx={{ fontWeight: 500, lineHeight: '16px' }}
                   >
-                    {password.service}
+                    {curFolder === 'All' ? (password.alias === null ? (password.service) : (<>{password.service} - </>)) : <></>}
+                    {password.alias === null ? <></> : password.alias}
                     <br />
                   </Typography>
                   <br />

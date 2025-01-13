@@ -158,12 +158,10 @@ ipcMain.handle('save-password', async (event, newPassword, folder) => {
     // Write the passwords to the file
     const passwords = readPasswordsFile()
     console.log('Saving password to folder ', folder)
-    if (passwords.folder) {
+    if (passwords[folder]) {
       passwords[folder].push(newPassword)
-    } else if (folder == 'All') {
-      passwords['misc'].push(newPassword)
     } else {
-      return { success: false, error: 'folder does not exist' }
+      passwords[folder] = [newPassword]
     }
     writePasswordsFile(passwords)
     return { success: true, newPasswords: passwords[folder] }
@@ -176,9 +174,10 @@ ipcMain.handle('save-password', async (event, newPassword, folder) => {
 ipcMain.handle('delete-password', async (event, passwordToDelete, folder) => {
   try {
     const passwords = readPasswordsFile()
-    passwords[folder] = passwords[folder].filter(
-      (item) => item.service !== passwordToDelete.service
-    )
+    if (!passwords[folder]) {
+      return { success: false, error: 'Error: Folder does not exist' }
+    }
+    passwords[folder] = passwords[folder].filter((item) => item !== passwordToDelete)
     writePasswordsFile(passwords)
     return { success: true, remainingEntries: passwords[folder] }
   } catch (error) {
