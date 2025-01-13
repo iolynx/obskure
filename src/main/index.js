@@ -99,6 +99,8 @@ ipcMain.handle('get-passwords', async (event, folder) => {
     } else if (passwords[folder]) {
       console.log('Passwords in ', folder, 'are : ', passwords[folder])
       return passwords[folder]
+    } else {
+      return { error: 'Folder Does Not Exist.' }
     }
   } catch (error) {
     console.error('Error reading passwords file:', error)
@@ -125,6 +127,7 @@ ipcMain.handle('create-folder', async (event, newFolder) => {
     if (!passwords[newFolder]) {
       passwords[newFolder] = []
       writePasswordsFile(passwords)
+      return Object.keys(passwords)
     } else {
       return { error: 'Error: Folder already exists' }
     }
@@ -134,12 +137,34 @@ ipcMain.handle('create-folder', async (event, newFolder) => {
   }
 })
 
+ipcMain.handle('delete-folder', async (event, folderToDelete) => {
+  try {
+    const passwords = readPasswordsFile()
+    if (passwords[folderToDelete]) {
+      delete passwords[folderToDelete]
+      writePasswordsFile(passwords)
+      return Object.keys(passwords)
+    } else {
+      return { error: 'Error: Folder does not exist' }
+    }
+  } catch (error) {
+    console.error('Error deleting folder: ', error)
+    return { error: 'Failed to delete folder.' }
+  }
+})
+
 ipcMain.handle('save-password', async (event, newPassword, folder) => {
   try {
     // Write the passwords to the file
     const passwords = readPasswordsFile()
     console.log('Saving password to folder ', folder)
-    passwords[folder].push(newPassword)
+    if (passwords.folder) {
+      passwords[folder].push(newPassword)
+    } else if (folder == 'All') {
+      passwords['misc'].push(newPassword)
+    } else {
+      return { success: false, error: 'folder does not exist' }
+    }
     writePasswordsFile(passwords)
     return { success: true, newPasswords: passwords[folder] }
   } catch (error) {

@@ -2,3 +2,16 @@
 - add folder support
  - add folder schema
 - fix other menu types
+
+refactor:
+- move styled input to a separate file and import it
+
+design:
+fix scrollbars
+
+design:
+- add popups when adding folders fails
+- show copy icon only when hover on password in passwordlist
+- add notes for each password
+- add renaming folders
+- ask password before deleting
