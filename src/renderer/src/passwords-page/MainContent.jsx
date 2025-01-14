@@ -132,7 +132,6 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
           passwords={passwords}
           onPasswordSelect={handlePasswordSelect}
           error={error}
-          curFolder={curFolder}
         />
       </Box>
 
@@ -143,20 +142,15 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
         }}
       >
         {addMode ? (
-          <PasswordEntry onAddition={handlePasswordAddition} curFolder={curFolder} />
+          <PasswordEntry onAddition={handlePasswordAddition} />
         ) : editMode ? (
-          <PasswordEdit
-            onEdit={handlePasswordEdit}
-            password={selectedPassword}
-            curFolder={curFolder}
-          />
+          <PasswordEdit onEdit={handlePasswordEdit} password={selectedPassword} />
         ) : (
           <PasswordInfo
             password={selectedPassword}
             onDelete={handlePasswordDelete}
             editMode={editMode}
             setEditMode={setEditMode}
-            curFolder={curFolder}
           />
         )}
       </Box>
