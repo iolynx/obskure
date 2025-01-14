@@ -1,10 +1,14 @@
-import { TextField, Input } from '@mui/material'
+import { TextField, Input, InputBase, ListItemText } from '@mui/material'
 import { useState } from 'react'
-import { Button, Box, Typography } from '@mui/material'
+import { Button, Box, Typography, Divider } from '@mui/material'
+import { List, ListItem, ListItemButton, ListItemIcon } from '@mui/material'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded'
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded'
 import CustomSnackBar from '../components/CustomSnackbar'
+import StyledInput from '../components/StyledInput'
+import { AddRounded, PlusOneRounded } from '@mui/icons-material'
+import { defaultTheme } from 'react-select'
 
 export default function PasswordEntry({ onAddition }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -55,15 +59,16 @@ export default function PasswordEntry({ onAddition }) {
         Add a new Password
       </Typography>
 
-      <TextField
+      <StyledInput
         name="service"
         placeholder="Service Name"
         value={newPassword.service}
         onChange={handleChange}
         margin="normal"
         sx={{
-          mt: 3,
-          ml: 1
+          input: {
+            fontSize: '20px'
+          }
         }}
       />
 
@@ -73,56 +78,38 @@ export default function PasswordEntry({ onAddition }) {
         }}
       ></Box>
 
-      {/* <Typography variant="body1" sx={{ mt: 1 }}>
-        <strong>Website URL:</strong> <br />
-      </Typography> */}
-
-      <LanguageRoundedIcon sx={{ position: 'relative', top: '6px' }} />
-
-      <Input
-        label="URL"
-        placeholder="Website URL"
-        name="other"
-        value={newPassword.other}
-        onChange={handleChange}
-        margin="normal"
-        sx={{
-          transformOrigin: 3,
-          ml: 1
-        }}
-      />
-      <br />
-      <br />
-
-      <AccountCircleRoundedIcon sx={{ position: 'relative', top: '7px' }} />
-      <Input
-        label="Username"
-        placeholder="Username"
-        name="username"
-        value={newPassword.username}
-        onChange={handleChange}
-        margin="normal"
-        sx={{
-          ml: 1
-        }}
-      />
-
-      <br />
-      <br />
-
-      <LockOpenRoundedIcon sx={{ position: 'relative', top: '7px' }} />
-      <Input
-        label="Password"
-        name="password"
-        placeholder="Password"
-        value={newPassword.password}
-        onChange={handleChange}
-        type="password"
-        margin="normal"
-        sx={{
-          ml: 1
-        }}
-      />
+      <List sx={{ backgroundColor: 'background.list', borderRadius: '12px' }}>
+        <ListItem sx={{ display: 'block !important' }}>
+          <StyledInput
+            name="cred1"
+            placeholder="label"
+            sx={{
+              mt: 0,
+              pt: 0,
+              input: {
+                fontSize: '12px'
+              }
+            }}
+          />
+          <br />
+          <StyledInput
+            name="cred2"
+            placeholder="value"
+            sx={{
+              mt: 0,
+              pt: 0,
+              input: {
+                mt: 0,
+                fontSize: '17px'
+              }
+            }}
+          />
+        </ListItem>
+        <Divider sx={{ mb: 0.8 }} />
+        <ListItem>
+          <AddRounded /> <ListItemText> Add a Field... </ListItemText>
+        </ListItem>
+      </List>
 
       <br />
       <br />

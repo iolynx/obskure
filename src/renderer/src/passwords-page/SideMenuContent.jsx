@@ -1,32 +1,31 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
-import WifiPasswordRoundedIcon from '@mui/icons-material/WifiPasswordRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { DeleteRounded } from '@mui/icons-material';
+import * as React from 'react'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded'
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded'
+import KeyRoundedIcon from '@mui/icons-material/KeyRounded'
+import WifiPasswordRoundedIcon from '@mui/icons-material/WifiPasswordRounded'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import StarRateRoundedIcon from '@mui/icons-material/StarRateRounded'
+import { DeleteRounded, ExpandMoreRounded } from '@mui/icons-material'
+import { Button, IconButton } from '@mui/material'
 
 const mainListItems = [
-  { text: 'All', icon : <HomeRoundedIcon /> },
-  { text: 'Passkeys', icon: <KeyRoundedIcon /> },
-  { text: 'Wifi', icon: <WifiPasswordRoundedIcon />},
-  { text: 'Deleted', icon: <DeleteRoundedIcon />}
+  { text: 'All', icon: <HomeRoundedIcon /> },
+  { text: 'Favourites', icon: <StarRateRoundedIcon /> },
+  { text: 'Deleted', icon: <DeleteRoundedIcon /> }
 ]
 
 const secondaryListItems = [
   { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
-];
-
+  { text: 'About', icon: <InfoRoundedIcon /> }
+]
 
 export default function SideMenuContent() {
   return (
@@ -40,6 +39,15 @@ export default function SideMenuContent() {
             </ListItemButton>
           </ListItem>
         ))}
+
+        <ListItem sx={{ display: 'flex' }}>
+          <ListItemText>
+            Categories
+            <ListItemIcon>
+              <ExpandMoreRounded onClick={() => console.log('hi')} />
+            </ListItemIcon>
+          </ListItemText>
+        </ListItem>
       </List>
 
       <List dense>
@@ -53,5 +61,5 @@ export default function SideMenuContent() {
         ))}
       </List>
     </Stack>
-  );
+  )
 }

@@ -40,6 +40,14 @@ function AppTheme(props) {
               }
             }
           },
+          MuiDivider: {
+            styleOverrides: {
+              root: {
+                backgroundColor: 'hsl(0 0% 45%)',
+                color: 'hsl(0 0% 45%)'
+              }
+            }
+          },
           ...inputsCustomizations,
           ...dataDisplayCustomizations,
           ...feedbackCustomizations,

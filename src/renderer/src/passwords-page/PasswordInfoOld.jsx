@@ -1,10 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Divider } from '@mui/material'
-import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { IconButton, Button, Tooltip } from '@mui/material'
-import { List, ListItem, ListItemButton, ListItemText, ListItemIcon } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
@@ -77,8 +74,8 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
 
   useEffect(() => {
     console.log(password)
-    if (password && password.creds.password) {
-      const score = zxcvbn(password.creds.password).score
+    if (password && password.password) {
+      const score = zxcvbn(password.password).score
       setStrength(score)
     }
   }, [password])
@@ -102,17 +99,13 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
             }}
           ></Box>
 
-          <Tooltip title="Edit Record">
-            <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleEdit}>
-              <EditRoundedIcon fontSize="14px" /> &nbsp; Edit
-            </Button>
-          </Tooltip>
+          <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleEdit}>
+            <EditRoundedIcon fontSize="14px" /> &nbsp; Edit
+          </Button>
 
-          <Tooltip title="Delete Record">
-            <Button aria-label="delete" onClick={handleDelete}>
-              <DeleteRoundedIcon fontSize="14px" /> &nbsp; Delete
-            </Button>
-          </Tooltip>
+          <Button aria-label="delete" onClick={handleDelete}>
+            <DeleteRoundedIcon fontSize="14px" /> &nbsp; Delete
+          </Button>
           <Box
             sx={{
               height: '50px',
@@ -123,65 +116,78 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
               {password.service}
             </Typography>
           </Box>
-          <List
-            sx={{
-              borderRadius: '12px',
-              backgroundColor: 'background.list'
-            }}
-          >
-            {Object.entries(password.creds).map(([key, value], index) => (
-              <React.Fragment key={key}>
-                <ListItem
-                  key={index}
-                  disablePadding
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    '&:hover .copy-icon': { opacity: 1, visibility: 'visible' }
-                  }}
-                >
-                  <Box>
-                    <Typography variant="caption" sx={{ color: 'text.bluegrey' }}>{key}</Typography>
-                    <Typography variant="subtitle1" sx={{ ml: 1}} >{value}</Typography>
-                  </Box>
-                  <Box>
-                    <ListItemIcon
-                      className="copy-icon"
-                      sx={{
-                        opacity: 0,
-                        visibility: 'hidden',
-                        transition: 'opacity 0.1s, visibility 0.1s'
-                      }}
-                      onClick={handleCopyPassword}
-                    >
-                      <ContentCopyRoundedIcon />
-                    </ListItemIcon>
-                  </Box>
-                </ListItem>
-                {index < Object.keys(password.creds).length - 1 && (
-                  <Divider sx={{ mt: 0.8, mb: 0.8 }} />
-                )}
-              </React.Fragment>
-            ))}
-          </List>
 
           {password.other ? (
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <Typography variant="body1">
-                Website URL:
-              </Typography>
-              <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
-                <Typography button variant="h5" color="lightblue">
-                  <u>{password.other}</u>
-                </Typography>
-              </a>
-            </Box>
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              <strong>Website URL:</strong> <br />
+            </Typography>
           ) : (
             <></>
           )}
 
-          <Typography sx={{mt: 2}}>Password Strength:</Typography>
-          <div className={strengthClass} style={{ width: '240px' }}>
+          <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
+            <Typography button variant="h5" color="lightblue">
+              <u>{password.other}</u>
+            </Typography>
+          </a>
+
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            <strong>Username:</strong> <br />
+          </Typography>
+          <Typography
+            variant="h6"
+            color="textTertiary"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
+            {password.username}
+            <Tooltip title="Copy Username">
+              <IconButton
+                aria-label="copy"
+                size="small"
+                sx={{ ml: 3 }}
+                onClick={handleCopyUsername}
+              >
+                <ContentCopyRoundedIcon />
+              </IconButton>
+            </Tooltip>
+          </Typography>
+
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            <strong>Password:</strong> <br />
+          </Typography>
+          <Typography
+            variant="h6"
+            color="textTertiary"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
+            {showPassword ? password.password : '••••••••••'}
+            <Box>
+              <Tooltip title="Show Password">
+                <IconButton aria-label="view-password" size="small" onClick={handleTogglePassword}>
+                  {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Copy Password">
+                <IconButton
+                  aria-label="copy"
+                  size="small"
+                  sx={{ ml: 1 }}
+                  onClick={handleCopyPassword}
+                >
+                  <ContentCopyRoundedIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Typography>
+
+          <Typography>Password Strength:</Typography>
+          <div className={strengthClass}>
             <div className="strength-meter-fill" data-strength={strength}></div>
           </div>
 

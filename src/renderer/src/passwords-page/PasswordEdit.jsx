@@ -1,30 +1,12 @@
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
-import { Box, Typography, IconButton, Button } from '@mui/material'
-import { Input, InputBase, InputAdornment } from '@mui/material'
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
-import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
+import { List, ListItem, Divider } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import zxcvbn from 'zxcvbn'
+import StyledField from '../components/StyledInput'
 import '../assets/main.scss'
-
-const StyledInput = styled(Input)(() => ({
-  marginTop: 0,
-  marginBottom: 0,
-  input: {
-    color: 'rgba(206, 236, 238, 0.7)'
-  },
-  fontWeight: 400,
-  '&:before': {
-    borderBottom: '1px solid rgba(255, 255, 255, 0.0)' // Default underline
-  },
-  '&:hover:not(.Mui-disabled):before': {
-    borderBottom: '1px solid rgba(255, 255, 255, 0.3)' // Hover state
-  },
-  '&:after': {
-    borderBottom: '1px solid rgba(255, 255, 255, 0.6)' // Focus state
-  }
-}))
 
 export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -32,15 +14,34 @@ export default function PasswordEdit({ onEdit, password }) {
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
   const [newPassword, setNewPassword] = useState({
     service: password.service,
-    username: password.username,
-    password: password.password,
+    creds: password.creds,
     other: password.other
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    console.log('cool shit being changed')
-    setNewPassword((prev) => ({ ...prev, [name]: value }))
+    const nameParts = name.split('.')
+
+    if (nameParts[1] === 'password') {
+      updatePasswordStrength(value)
+    }
+
+    if (nameParts.length === 1) {
+      setNewPassword((prev) => ({ ...prev, [name]: value }))
+    } else {
+      setNewPassword((prev) => {
+        // Destructure the previous state to preserve other properties
+        const updatedCreds = { ...prev.creds }
+
+        // Drill down to the nested property
+        updatedCreds[nameParts[1]] = value
+
+        return {
+          ...prev,
+          creds: updatedCreds // Update only the 'creds' part of the state
+        }
+      })
+    }
   }
 
   const handleSubmit = (e) => {
@@ -54,18 +55,13 @@ export default function PasswordEdit({ onEdit, password }) {
     onEdit(null, password)
   }
 
-  const handleTogglePassword = (event) => {
-    event.preventDefault()
-    setShowPassword((prev) => !prev)
-  }
-
-  useEffect(() => {
-    console.log(password)
-    if (password && password.password) {
-      const score = zxcvbn(password.password).score
+  function updatePasswordStrength(password) {
+    if (password) {
+      const score = zxcvbn(password).score
+      console.log(score)
       setStrength(score)
     }
-  }, [password])
+  }
 
   return (
     <Box
@@ -78,35 +74,66 @@ export default function PasswordEdit({ onEdit, password }) {
         overflow: 'hidden'
       }}
     >
-      <Box
+      <Typography variant="h3" color="text.info">
+        Editing {password.service}
+      </Typography>
+      <StyledField
+        name="service"
+        placeholder="Service Name"
+        defaultValue={password.creds.service}
+        value={newPassword.service}
+        onChange={handleChange}
+        margin="normal"
         sx={{
-          height: '50px',
-          display: 'flex'
+          mb: 1,
+          input: {
+            fontSize: '20px'
+          }
+        }}
+      />
+
+      <List
+        sx={{
+          borderRadius: '12px',
+          backgroundColor: 'background.list'
         }}
       >
-        <InputBase
-          name="service"
-          placeholder="Service Name"
-          defaultValue={password.service}
-          onChange={handleChange}
-          variant="outlined"
-          margin="none"
-          fullWidth
-          sx={{
-            input: {
-              fontSize: '24px',
-              fontWeight: 600,
-              color: 'rgba(206, 236, 238, 0.7)'
-            }
-          }}
-        />
-      </Box>
+        {Object.entries(password.creds).map(([key, value], index) => (
+          <React.Fragment key={key}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                '&:hover .copy-icon': { opacity: 1, visibility: 'visible' }
+              }}
+            >
+              <Box>
+                <Typography variant="caption" sx={{ color: 'text.bluegrey' }}>
+                  {key}
+                </Typography>
+                <br />
+                <StyledField
+                  name={'creds.' + key}
+                  defaultValue={value}
+                  onChange={handleChange}
+                  sx={{ ml: 1, mt: 0, mb: 0, pt: 0, pb: 0 }}
+                />
+              </Box>
+            </ListItem>
+            {index < Object.keys(password.creds).length - 1 && (
+              <Divider sx={{ mt: 0.8, mb: 0.8 }} />
+            )}
+          </React.Fragment>
+        ))}
+      </List>
 
       <Typography variant="body1" sx={{ mt: 2 }}>
         <strong>Website URL:</strong> (Leave Empty to Omit) <br />
       </Typography>
 
-      <StyledInput
+      <StyledField
         name="other"
         placeholder="URL"
         defaultValue={password.other}
@@ -114,59 +141,6 @@ export default function PasswordEdit({ onEdit, password }) {
         sx={{
           fontSize: '20px'
         }}
-      />
-
-      <Typography variant="body1" sx={{ mt: 1 }}>
-        <strong>Username:</strong> <br />
-      </Typography>
-
-      <StyledInput
-        name="username"
-        placeholder="Username"
-        defaultValue={password.username}
-        onChange={handleChange}
-        sx={{
-          mt: 0,
-          fontSize: '18px'
-        }}
-      />
-
-      <Typography variant="body1" sx={{ mt: 1 }}>
-        <strong>Password:</strong> <br />
-      </Typography>
-
-      <StyledInput
-        name="password"
-        placeholder="Password"
-        type={showPassword ? 'text' : 'password'}
-        defaultValue={password.password}
-        onChange={handleChange}
-        variant="outlined"
-        sx={{
-          input: {
-            fontSize: '18px',
-            fontWeight: 600
-          }
-        }}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              size="small"
-              sx={{
-                border: 'none',
-                backgroundColor: 'transparent !important',
-                padding: 0,
-                '&:hover': {
-                  backgroundColor: 'transparent' // No hover background
-                }
-              }}
-              aria-label="toggle password visibility"
-              onClick={handleTogglePassword}
-            >
-              {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
-            </IconButton>
-          </InputAdornment>
-        }
       />
 
       <Typography sx={{ mt: 1 }}>Password Strength:</Typography>
@@ -189,8 +163,7 @@ PasswordEdit.propTypes = {
   onEdit: PropTypes.func.isRequired, // Ensures onEdit is a required function
   password: PropTypes.shape({
     service: PropTypes.string.isRequired, // Ensures service is a required string
-    username: PropTypes.string.isRequired, // Ensures username is a required string
-    password: PropTypes.string.isRequired, // Ensures password is a required string
+    creds: PropTypes.object.isRequired,
     other: PropTypes.string
   }).isRequired // Ensures the entire password object is required
 }

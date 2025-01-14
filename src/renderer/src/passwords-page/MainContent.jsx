@@ -117,12 +117,11 @@ export default function MainContent({ addMode, setAddMode }) {
           flex: '1 1 auto',
           overflowY: 'scroll',
           overflowX: 'hidden',
-          scrollbarWidth: 'thin',
+          scrollbarWidth: 'none',
           scrollbarColor: '#8897b3 #121212',
           borderRight: '2px solid',
           borderColor: 'divider',
-          maxWidth: '300px',
-          width: '300px'
+          maxWidth: '250px'
         }}
       >
         <PasswordsList

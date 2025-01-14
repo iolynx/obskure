@@ -303,7 +303,10 @@ export const colorSchemes = {
         // default: gray[900],
         // default: green[900],
         // default: 'hsl(97, 9%, 9%)',
-        default: 'hsl(0 0% 5%)'
+        default: 'hsl(0 0% 3%)',
+        oldlist: 'hsl(0 0% 20%)',
+        paper: 'hsl(210, 11%, 7%)',
+        list: 'hsl(0 0% 8%)'
         // default: 'hsl(268, 34%, 30%)',
         // paper: 'hsl(220, 30%, 7%)',
       },
@@ -311,6 +314,7 @@ export const colorSchemes = {
         primary: 'hsl(0, 0%, 100%)',
         secondary: gray[400],
         tertiary: 'hsl(210, 16%, 70%)',
+        bluegrey: 'hsl(212, 40%, 80%)',
         info: 'hsl(210, 10%, 46%)'
       },
       action: {
@@ -354,7 +358,7 @@ export const typography = {
     fontWeight: 600
   },
   subtitle1: {
-    fontSize: defaultTheme.typography.pxToRem(18)
+    fontSize: defaultTheme.typography.pxToRem(15)
   },
   subtitle2: {
     fontSize: defaultTheme.typography.pxToRem(14),

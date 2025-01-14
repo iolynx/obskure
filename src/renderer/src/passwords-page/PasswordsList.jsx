@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import ListItem from '@mui/material/ListItem'
-import { Paper, List, IconButton, Snackbar, Alert, Tooltip } from '@mui/material'
+import { Paper, List, Button, IconButton, Snackbar, Alert, Tooltip } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 
 export default function PasswordsList({ passwords, onPasswordSelect, error }) {
@@ -41,9 +41,9 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
       sx={{
         height: '100%',
         overflow: 'visible',
-        p: 2,
+        p: 0,
         boxShadow: 3,
-        flex: 1, // Allow it to stretch in the flex container
+        flex: 1,
         width: '100%'
       }}
     >
@@ -53,12 +53,11 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
         <List
           direction="row"
           sx={{
-            p: 0,
-            gap: 1,
+            pl: 0,
+            gap: 0,
             alignItems: 'center',
-            maxWidth: '100%',
+            maxWidth: '100%'
             // borderTop: '1px solid',
-            borderColor: 'divider'
           }}
         >
           {passwords.map((password, index) => (
@@ -69,11 +68,14 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
                 sx={{
                   justifyContent: 'space-between',
                   borderRadius: '10px',
+                  pt: 1.5,
+                  pb: 1.5,
                   pr: 1,
                   pl: 1,
                   backgroundColor:
                     selectedIndex === index ? 'rgba(22, 25, 29, 0.6)' : 'transparent',
-                  transition: 'background-color 0.2s'
+                  transition: 'background-color 0.2s',
+                  '&:hover .copy-button': { opacity: 1, visibility: 'visible' }
                   // padding: '8px 16px'
                 }}
                 onClick={() => handleSelect(index, password)}
@@ -89,25 +91,32 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
                   </Typography>
                   <br />
                   <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                    {password.username}
+                    {password.creds.username}
                   </Typography>
                 </Stack>
-                <Box>
+                <Box
+                  className="copy-button"
+                  sx={{
+                    opacity: 0,
+                    visibility: 'hidden',
+                    transition: 'opacity 0.1s, visibility 0.1s',
+                    scale: 0.8
+                  }}
+                >
                   <Tooltip title="Copy Password">
-                    <IconButton
+                    <Button
                       aria-label="copy"
-                      size="small"
+                      sx={{ maxWidth: '10px' }}
                       onClick={(e) => {
                         e.stopPropagation()
-                        handleCopy(password.password)
+                        handleCopy(password.creds.password)
                       }}
                     >
-                      <ContentCopyRoundedIcon />
-                    </IconButton>
+                      <ContentCopyRoundedIcon fontSize="12px" />
+                    </Button>
                   </Tooltip>
                 </Box>
               </ListItem>
-              <Divider width="110%" />
             </>
           ))}
           <Snackbar
