@@ -20,11 +20,10 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
         console.log(curFolder)
         const result = await window.electronAPI.getPasswords(curFolder)
         if (result.error) {
-          console.log('From MainContent: ', result.error)
+          console.log(result.error)
           setError(result.error)
         } else {
           setPasswords(result)
-          setError(null)
         }
       } catch (err) {
         console.error('Error fetching passwords:', err)

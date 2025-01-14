@@ -55,7 +55,7 @@ export default function PasswordsPage(props) {
             marginLeft: '-16px'
           }}
         >
-          <SideMenu curFolder={curFolder} setCurFolder={setCurFolder} />
+          <SideMenu setCurFolder={setCurFolder} />
           <Divider orientation="vertical" />
           <Box
             component="main"

@@ -21,7 +21,7 @@ const Drawer = styled(MuiDrawer)({
   }
 })
 
-export default function SideMenu({ curFolder, setCurFolder }) {
+export default function SideMenu({ setCurFolder }) {
   const navigate = useNavigate()
 
   const logoutClicked = (event) => {
@@ -40,7 +40,7 @@ export default function SideMenu({ curFolder, setCurFolder }) {
         }
       }}
     >
-      <MenuContent curFolder={curFolder} setCurFolder={setCurFolder} />
+      <MenuContent setCurFolder={setCurFolder} />
       <Stack
         direction="row"
         sx={{

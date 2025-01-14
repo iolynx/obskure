@@ -11,8 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   deletePassword: (passwordToDelete, folder) =>
     ipcRenderer.invoke('delete-password', passwordToDelete, folder),
   getFolders: () => ipcRenderer.invoke('get-folders'),
-  createFolder: (newFolder) => ipcRenderer.invoke('create-folder', newFolder),
-  deleteFolder: (folderToDelete) => ipcRenderer.invoke('delete-folder', folderToDelete)
+  createFolder: (newFolder) => ipcRenderer.invoke('create-folder', newFolder)
 })
 
 // Use `contextBridge` APIs to expose Electron APIs to
