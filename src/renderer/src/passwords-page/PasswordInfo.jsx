@@ -120,6 +120,23 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
                 {password.service}
               </Typography>
 
+              <Box
+                sx={{
+                  width: '95%'
+                }}
+              ></Box>
+
+              <Tooltip title="Edit Record">
+                <IconButton aria-label="delete" size="small" sx={{ mr: 1 }} onClick={handleEdit}>
+                  <EditRoundedIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Delete Record">
+                <IconButton aria-label="delete" size="small" onClick={handleDelete}>
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           ) : (
             <></>
@@ -135,27 +152,15 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
               }}
             >
               &quot;{password.alias}&quot;
+              <Tooltip title="Copy Alias">
+                <IconButton aria-label="copy" size="small" sx={{ ml: 3 }} onClick={handleCopyAlias}>
+                  <ContentCopyRoundedIcon />
+                </IconButton>
+              </Tooltip>
             </Typography>
           ) : (
             <></>
           )}
-          <Box
-            sx={{
-              width: '95%'
-            }}
-          ></Box>
-
-          <Tooltip title="Edit Record">
-            <IconButton aria-label="delete" size="small" sx={{ mr: 1 }} onClick={handleEdit}>
-              <EditRoundedIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Delete Record">
-            <IconButton aria-label="delete" size="small" onClick={handleDelete}>
-              <DeleteRoundedIcon />
-            </IconButton>
-          </Tooltip>
 
           {password.other ? (
             <Typography variant="body1" sx={{ mt: 1 }}>

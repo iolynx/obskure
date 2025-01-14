@@ -15,7 +15,6 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
   const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
-    setSelectedPassword(null)
     async function fetchPasswords() {
       try {
         console.log(curFolder)

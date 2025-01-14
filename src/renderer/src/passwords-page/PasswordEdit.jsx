@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
-import { TextField } from '@mui/material'
 import { Box, Typography, IconButton, Button } from '@mui/material'
 import { Input, InputBase, InputAdornment } from '@mui/material'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
@@ -27,7 +26,7 @@ const StyledInput = styled(Input)(() => ({
   }
 }))
 
-export default function PasswordEdit({ onEdit, password, curFolder }) {
+export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
   const [strength, setStrength] = useState(0)
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
@@ -35,12 +34,12 @@ export default function PasswordEdit({ onEdit, password, curFolder }) {
     service: password.service,
     username: password.username,
     password: password.password,
-    other: password.other,
-    alias: password.alias
+    other: password.other
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    console.log('cool shit being changed')
     setNewPassword((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -79,59 +78,31 @@ export default function PasswordEdit({ onEdit, password, curFolder }) {
         overflow: 'hidden'
       }}
     >
-      {password.alias ? (
-        <Box
+      <Box
+        sx={{
+          height: '50px',
+          display: 'flex'
+        }}
+      >
+        <InputBase
+          name="service"
+          placeholder="Service Name"
+          defaultValue={password.service}
+          onChange={handleChange}
+          variant="outlined"
+          margin="none"
+          fullWidth
           sx={{
-            height: '50px',
-            display: 'block'
+            input: {
+              fontSize: '24px',
+              fontWeight: 600,
+              color: 'rgba(206, 236, 238, 0.7)'
+            }
           }}
-        >
-          <Typography variant="h4">{password.service}</Typography>
-          <InputBase
-            placeholder="Alias (Optional)"
-            name="alias"
-            defaultValue={password.alias}
-            value={password.alias}
-            onChange={handleChange}
-            sx={{
-              transformOrigin: 3,
-              mt: 2,
-              mb: 10,
-              input: {
-                fontSize: '24px',
-                fontWeight: 600,
-                color: 'rgba(206, 236, 238, 0.7)'
-              }
-            }}
-          />
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            height: '50px',
-            display: 'flex'
-          }}
-        >
-          <InputBase
-            name="service"
-            placeholder="Service Name"
-            defaultValue={password.service}
-            onChange={handleChange}
-            variant="outlined"
-            margin="none"
-            fullWidth
-            sx={{
-              input: {
-                fontSize: '24px',
-                fontWeight: 600,
-                color: 'rgba(206, 236, 238, 0.7)'
-              }
-            }}
-          />
-        </Box>
-      )}
+        />
+      </Box>
 
-      <Typography variant="body1" sx={{ mt: 5 }}>
+      <Typography variant="body1" sx={{ mt: 2 }}>
         <strong>Website URL:</strong> (Leave Empty to Omit) <br />
       </Typography>
 
@@ -220,7 +191,6 @@ PasswordEdit.propTypes = {
     service: PropTypes.string.isRequired, // Ensures service is a required string
     username: PropTypes.string.isRequired, // Ensures username is a required string
     password: PropTypes.string.isRequired, // Ensures password is a required string
-    other: PropTypes.string,
-    alias: PropTypes.string
+    other: PropTypes.string
   }).isRequired // Ensures the entire password object is required
 }

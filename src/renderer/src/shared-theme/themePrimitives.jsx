@@ -324,7 +324,7 @@ export const colorSchemes = {
 }
 
 export const typography = {
-  fontFamily: 'Arial, Cascadia Code',
+  fontFamily: 'Inter, Cascadia Code',
   h1: {
     fontSize: defaultTheme.typography.pxToRem(48),
     fontWeight: 600,
