@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { Snackbar, Alert } from '@mui/material'
 import PasswordInfo from './PasswordInfo'
@@ -6,7 +6,7 @@ import PasswordsList from './PasswordsList'
 import PasswordEntry from './PasswordEntry'
 import PasswordEdit from './PasswordEdit'
 
-export default function MainContent({ addMode, setAddMode, curFolder }) {
+export default function MainContent({ addMode, setAddMode }) {
   const [passwords, setPasswords] = useState([])
   const [selectedPassword, setSelectedPassword] = useState(null)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -17,8 +17,7 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
   useEffect(() => {
     async function fetchPasswords() {
       try {
-        console.log(curFolder)
-        const result = await window.electronAPI.getPasswords(curFolder)
+        const result = await window.electronAPI.getPasswords()
         if (result.error) {
           console.log(result.error)
           setError(result.error)
@@ -31,7 +30,7 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
       }
     }
     fetchPasswords()
-  }, [curFolder])
+  }, [])
 
   const handlePasswordSelect = (password) => {
     setSelectedPassword(password)
@@ -40,7 +39,7 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
   }
 
   const handlePasswordDelete = async (password) => {
-    const result = await window.electronAPI.deletePassword(password, curFolder)
+    const result = await window.electronAPI.deletePassword(password)
     if (result.success) {
       setSnackbarMessage('Record Deleted Successfully')
       setSnackbarOpen(true)
@@ -54,11 +53,10 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
   }
 
   const handlePasswordAddition = async (newPassword) => {
-    window.electronAPI.savePassword(newPassword, curFolder).then((response) => {
+    window.electronAPI.savePassword(newPassword).then((response) => {
       if (response.success) {
         setSnackbarMessage('Password saved successfully')
         setSnackbarOpen(true)
-        console.log(response.newPasswords)
         setPasswords(response.newPasswords)
         setAddMode(false)
         setSelectedPassword(0)
@@ -79,9 +77,9 @@ export default function MainContent({ addMode, setAddMode, curFolder }) {
       return
     }
 
-    window.electronAPI.deletePassword(oldPassword, curFolder).then((response) => {
+    window.electronAPI.deletePassword(oldPassword).then((response) => {
       if (response.success) {
-        window.electronAPI.savePassword(newPassword, curFolder).then((response) => {
+        window.electronAPI.savePassword(newPassword).then((response) => {
           if (response.success) {
             setSnackbarMessage('Password saved successfully')
             setSnackbarOpen(true)

@@ -31,7 +31,7 @@ function useSearchDialog() {
 
   async function getPasswords() {
     try {
-      const result = await window.electronAPI.getPasswords('all')
+      const result = await window.electronAPI.getPasswords()
       if (result.error) {
         console.log(result.error)
         setContent(result.error)

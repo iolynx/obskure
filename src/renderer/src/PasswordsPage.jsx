@@ -27,7 +27,6 @@ const PWContainer = styled(Stack)(({ theme }) => ({
 
 export default function PasswordsPage(props) {
   const [addMode, setAddMode] = useState(false)
-  const [curFolder, setCurFolder] = useState('All')
 
   const handleAddClick = () => {
     setAddMode(!addMode)
@@ -55,7 +54,7 @@ export default function PasswordsPage(props) {
             marginLeft: '-16px'
           }}
         >
-          <SideMenu setCurFolder={setCurFolder} />
+          <SideMenu />
           <Divider orientation="vertical" />
           <Box
             component="main"
@@ -67,8 +66,8 @@ export default function PasswordsPage(props) {
               height: '100vh'
             }}
           >
-            <Header onAddClick={handleAddClick} curFolder={curFolder} />
-            <MainContent addMode={addMode} setAddMode={setAddMode} curFolder={curFolder} />{' '}
+            <Header onAddClick={handleAddClick} />
+            <MainContent addMode={addMode} setAddMode={setAddMode} />{' '}
             {/* add passwordgroup: all/foldername type shi */}
           </Box>
         </Stack>

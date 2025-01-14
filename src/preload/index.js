@@ -1,18 +1,16 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-const path = require('path')
+const path = require('path');
 
 // Custom APIs for renderer
 const api = {}
 
+
 contextBridge.exposeInMainWorld('electronAPI', {
-  getPasswords: (folder) => ipcRenderer.invoke('get-passwords', folder),
-  savePassword: (newPassword, folder) => ipcRenderer.invoke('save-password', newPassword, folder),
-  deletePassword: (passwordToDelete, folder) =>
-    ipcRenderer.invoke('delete-password', passwordToDelete, folder),
-  getFolders: () => ipcRenderer.invoke('get-folders'),
-  createFolder: (newFolder) => ipcRenderer.invoke('create-folder', newFolder)
-})
+  getPasswords: () => ipcRenderer.invoke('get-passwords'),
+  savePassword: (newPassword) => ipcRenderer.invoke('save-password', newPassword),
+  deletePassword: (passwordToDelete) => ipcRenderer.invoke('delete-password', passwordToDelete)
+});
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

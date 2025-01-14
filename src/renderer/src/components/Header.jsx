@@ -6,13 +6,19 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import ColorModeSelect from '../shared-theme/ColorModeSelect'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useSearchDialog from './useSearchDialog'
+import ReactSearchBox from 'react-search-box'
 
-export default function Header({ onAddClick, curFolder }) {
+export default function Header({ onAddClick }) {
   const { showDialog, SearchDialogComponent } = useSearchDialog()
 
   const openSearchDialog = async () => {
     // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
-    await showDialog()
+
+    const userConfirmed = await showDialog()
+    if (userConfirmed) {
+      onDelete(password)
+      setResult(false)
+    }
   }
 
   return (
@@ -35,7 +41,7 @@ export default function Header({ onAddClick, curFolder }) {
       spacing={2}
     >
       <Stack direction="row" sx={{ gap: 5.8 }}>
-        <TitleBar curFolder={curFolder} />
+        <TitleBar />
 
         <Tooltip title="Add New Record">
           <IconButton aria-label="plus" size="small" onClick={onAddClick}>

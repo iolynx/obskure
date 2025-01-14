@@ -1,31 +1,31 @@
-import { useState } from 'react'
-import Confirmation from './Confirmation'
+import React, { useState } from 'react';
+import Confirmation from './Confirmation';
 
 function useConfirmation() {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [dialogResolve, setDialogResolve] = useState(null)
-  const [dialogTitle, setTitle] = useState('')
-  const [dialogContent, setContent] = useState('')
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogResolve, setDialogResolve] = useState(null);
+  const [dialogTitle, setTitle] = useState('');
+  const [dialogContent, setContent] = useState('');
 
   const showDialog = (title, content) => {
-    setTitle(title)
+    setTitle(title);
     setContent(content)
-    setDialogOpen(true)
+    setDialogOpen(true);
 
     return new Promise((resolve) => {
-      setDialogResolve(() => resolve) // Save the resolve function
+      setDialogResolve(() => resolve); // Save the resolve function
     }).finally(() => {
-      setDialogOpen(false) // Ensure the dialog closes after resolving
-    })
-  }
+      setDialogOpen(false); // Ensure the dialog closes after resolving
+    });
+  };
 
   const handleClose = () => {
-    setDialogOpen(false)
-  }
+    setDialogOpen(false);
+  };
 
   const handleConfirm = (value) => {
-    if (dialogResolve) dialogResolve(value) // Resolve the promise with true/false
-  }
+    if (dialogResolve) dialogResolve(value); // Resolve the promise with true/false
+  };
 
   const DialogComponent = (
     <Confirmation
@@ -35,9 +35,9 @@ function useConfirmation() {
       title={dialogTitle}
       content={dialogContent}
     />
-  )
+  );
 
-  return { showDialog, DialogComponent }
+  return { showDialog, DialogComponent };
 }
 
-export default useConfirmation
+export default useConfirmation;
