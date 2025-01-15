@@ -73,6 +73,7 @@ export default function PasswordEdit({ onEdit, password }) {
   }
 
   const handleSubmit = (e) => {
+    newPassword.other = urls
     console.log('Edited Password: ', newPassword)
     e.preventDefault()
     onEdit(newPassword, password)
