@@ -9,6 +9,7 @@ import { feedbackCustomizations } from './customizations/feedback'
 import { navigationCustomizations } from './customizations/navigation'
 import { surfacesCustomizations } from './customizations/surfaces'
 import { colorSchemes, typography, shadows, shape } from './themePrimitives'
+import { BorderColor } from '@mui/icons-material'
 
 function AppTheme(props) {
   const { children, disableCustomTheme, themeComponents } = props
@@ -29,10 +30,10 @@ function AppTheme(props) {
           MuiButton: {
             styleOverrides: {
               root: {
-                borderColor: 'rgb(51, 59, 77)', // Custom border color
+                borderColor: 'rgb(151, 59, 77)', // Custom border color
                 backgroundColor: 'rgb(11, 14, 20)', // Custom background color
                 color: '#fff', // Text color (optional)
-                borderWidth: '1px', // Border width
+                borderWidth: '20px', // Border width
                 borderStyle: 'solid', // Border style
                 '&:hover': {
                   backgroundColor: 'rgb(15, 18, 25)' // Darker shade for hover

@@ -16,7 +16,7 @@ button:active {
   transition: transform 0.1s ease-in-out;
 }
 
-body.custom-justify{
+body.custom-justify {
   justify-content: left;
 }
 
@@ -158,6 +158,7 @@ code {
   font-size: 14px;
   line-height: 14px;
   opacity: 0.8;
+
   &:last-child {
     border: none;
   }
@@ -176,6 +177,7 @@ code {
 }
 
 @media (max-width: 350px) {
+
   .tip,
   .actions {
     display: none;

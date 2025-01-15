@@ -365,7 +365,8 @@ export const typography = {
     fontWeight: 500
   },
   body1: {
-    fontSize: defaultTheme.typography.pxToRem(14)
+    fontSize: defaultTheme.typography.pxToRem(17),
+    fontWeight: 300
   },
   body2: {
     fontSize: defaultTheme.typography.pxToRem(14),

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Divider } from '@mui/material'
+import { ButtonBase, Divider, Icon } from '@mui/material'
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
@@ -15,6 +15,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import useConfirmation from './useConfirmation'
 import zxcvbn from 'zxcvbn'
 import '../assets/main.scss'
+import { StarRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material'
 
 export default function PasswordInfo({ password, onDelete, editMode, setEditMode }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -24,7 +25,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   const { showDialog, DialogComponent } = useConfirmation()
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
 
-  const handleTogglePassword = () => {
+  const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
   }
 
@@ -60,6 +61,10 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
     setSnackbarOpen(false)
   }
 
+  const handleFavourite = () => {
+    // write some code to pull up a favourites file and add this to it
+  }
+
   const handleDelete = async () => {
     // const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
     const userConfirmed = await showDialog(
@@ -88,45 +93,54 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
       sx={{
         flex: 1, // Allow it to stretch in the flex container
         height: '100%', // Occupy full height
-        pt: 3,
+        pt: 2,
         pl: 3,
-        pr: 3,
-        overflow: 'hidden'
+        pr: 3
       }}
     >
       {password ? (
         <>
           <Box
             sx={{
-              minWidth: '85%'
-            }}
-          ></Box>
-
-          <Tooltip title="Edit Record">
-            <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleEdit}>
-              <EditRoundedIcon fontSize="14px" /> &nbsp; Edit
-            </Button>
-          </Tooltip>
-
-          <Tooltip title="Delete Record">
-            <Button aria-label="delete" onClick={handleDelete}>
-              <DeleteRoundedIcon fontSize="14px" /> &nbsp; Delete
-            </Button>
-          </Tooltip>
-          <Box
-            sx={{
               height: '50px',
-              display: 'flex'
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'top',
+              mb: 1
             }}
           >
-            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+            <Typography variant="h2" sx={{ fontWeight: 600 }}>
               {password.service}
             </Typography>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                mb: 5
+              }}
+            >
+              <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleFavourite}>
+                <StarRounded fontSize="16px" /> &nbsp; Favourite
+              </Button>
+
+              <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleEdit}>
+                <EditRoundedIcon fontSize="14px" /> &nbsp; Edit
+              </Button>
+
+              <Button aria-label="delete" onClick={handleDelete}>
+                <DeleteRoundedIcon fontSize="14px" /> &nbsp; Delete
+              </Button>
+            </Box>
           </Box>
           <List
             sx={{
               borderRadius: '12px',
-              backgroundColor: 'background.list'
+              backgroundColor: 'background.list',
+              pt: 0.5,
+              pb: 0.5,
+              maxWidth: '80%',
+              minWidth: '200px'
             }}
           >
             {Object.entries(password.creds).map(([key, value], index) => (
@@ -137,14 +151,37 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    '&:hover .copy-icon': { opacity: 1, visibility: 'visible' }
+                    '&:hover .copy-icon': { opacity: 1, visibility: 'visible' },
+                    '&:hover .visibility-icon': { opacity: 1, visibility: 'visible' }
                   }}
                 >
                   <Box>
-                    <Typography variant="caption" sx={{ color: 'text.bluegrey' }}>{key}</Typography>
-                    <Typography variant="subtitle1" sx={{ ml: 1}} >{value}</Typography>
+                    <Typography variant="caption" sx={{ color: 'text.bluegrey' }}>
+                      {key}
+                    </Typography>
+                    <Typography variant="subtitle1" sx={{ ml: 1 }}>
+                      {!password.hide.includes(key)
+                        ? value
+                        : !showPassword
+                          ? '••••••••••••'
+                          : value}
+                    </Typography>
                   </Box>
                   <Box>
+                    {password.hide.includes(key) && (
+                      <ListItemIcon
+                        className="visibility-icon"
+                        sx={{
+                          opacity: 0,
+                          visibility: 'hidden',
+                          transition: 'opacity 0.1s, visibility 0.1s',
+                          mr: 2
+                        }}
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
+                      </ListItemIcon>
+                    )}
                     <ListItemIcon
                       className="copy-icon"
                       sx={{
@@ -167,20 +204,20 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
 
           {password.other ? (
             <Box sx={{ mt: 2, mb: 2 }}>
-              <Typography variant="body1">
-                Website URL:
-              </Typography>
-              <a href={'https://' + password.other} target="_blank" rel="noopener noreferrer">
-                <Typography button variant="h5" color="lightblue">
-                  <u>{password.other}</u>
-                </Typography>
-              </a>
+              <Typography variant="body1">Website URL:</Typography>
+              {password.other.map((url, index) => (
+                <a href={'https://' + url} target="_blank" rel="noopener noreferrer" key={index}>
+                  <Typography button variant="h5" color="lightblue">
+                    <u>{url}</u>
+                  </Typography>
+                </a>
+              ))}
             </Box>
           ) : (
             <></>
           )}
 
-          <Typography sx={{mt: 2}}>Password Strength:</Typography>
+          <Typography sx={{ mt: 2 }}>Password Strength:</Typography>
           <div className={strengthClass} style={{ width: '240px' }}>
             <div className="strength-meter-fill" data-strength={strength}></div>
           </div>
@@ -199,7 +236,9 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
           {DialogComponent}
         </>
       ) : (
-        <Typography variant="body1">Select an account to get started.</Typography>
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          Select an account show data.
+        </Typography>
       )}
     </Box>
   )

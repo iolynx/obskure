@@ -1,21 +1,31 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
-import { List, ListItem, Divider } from '@mui/material'
-import { Box, Typography, Button } from '@mui/material'
+import { List, ListItem, Divider, Tooltip } from '@mui/material'
+import { Box, Typography, Button, IconButton, ListItemIcon } from '@mui/material'
 import zxcvbn from 'zxcvbn'
 import StyledField from '../components/StyledInput'
 import '../assets/main.scss'
+import {
+  AddRounded,
+  DeleteRounded,
+  VisibilityOffRounded,
+  VisibilityRounded
+} from '@mui/icons-material'
 
 export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
-  const [strength, setStrength] = useState(0)
+  const [urls, setUrls] = useState(password.other ? password.other : [])
+  const [strength, setStrength] = useState(zxcvbn(password.creds.password).score)
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
+  const [visibility, setVisibility] = useState(false)
   const [newPassword, setNewPassword] = useState({
     service: password.service,
     creds: password.creds,
-    other: password.other
+    other: password.other,
+    hide: password.hide
   })
 
   const handleChange = (e) => {
@@ -43,6 +53,21 @@ export default function PasswordEdit({ onEdit, password }) {
       })
     }
   }
+  const handleAddURL = () => {
+    setUrls([...urls, '']) // Add an empty string for a new URL field
+  }
+
+  const handleDeleteURL = (index) => {
+    const updatedUrls = urls.filter((_, i) => i !== index)
+    setUrls(updatedUrls)
+  }
+
+  const handleURLChange = (index, value) => {
+    const updatedUrls = [...urls]
+    updatedUrls[index] = value
+    setUrls(updatedUrls)
+    newPassword.other = updatedUrls
+  }
 
   const handleSubmit = (e) => {
     console.log('Edited Password: ', newPassword)
@@ -63,6 +88,27 @@ export default function PasswordEdit({ onEdit, password }) {
     }
   }
 
+  const handleChangeVisibility = (key) => {
+    // do something here
+    setVisibility(!visibility)
+    if (!visibility) {
+      if (!password.hide.includes(key)) {
+        setNewPassword((prev) => ({
+          ...prev,
+          hide: [...prev.hide, key]
+        }))
+      }
+    } else if (visibility) {
+      if (password.hide.includes(key)) {
+        setNewPassword((prev) => ({
+          ...prev,
+          hide: prev.hide.filter((item) => item !== key)
+        }))
+      }
+    }
+    console.log(newPassword)
+  }
+
   return (
     <Box
       sx={{
@@ -71,7 +117,7 @@ export default function PasswordEdit({ onEdit, password }) {
         pt: 2,
         pl: 3,
         pr: 3,
-        overflow: 'hidden'
+        overflow: 'visible'
       }}
     >
       <Typography variant="h3" color="text.info">
@@ -86,8 +132,10 @@ export default function PasswordEdit({ onEdit, password }) {
         margin="normal"
         sx={{
           mb: 1,
+          pt: 0.2,
+          pb: 0.2,
           input: {
-            fontSize: '20px'
+            fontSize: '24px'
           }
         }}
       />
@@ -95,7 +143,11 @@ export default function PasswordEdit({ onEdit, password }) {
       <List
         sx={{
           borderRadius: '12px',
-          backgroundColor: 'background.list'
+          backgroundColor: 'background.list',
+          pt: 0.5,
+          pb: 0.5,
+          maxWidth: '80%',
+          minWidth: '200px'
         }}
       >
         {Object.entries(password.creds).map(([key, value], index) => (
@@ -106,7 +158,7 @@ export default function PasswordEdit({ onEdit, password }) {
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                '&:hover .copy-icon': { opacity: 1, visibility: 'visible' }
+                '&:hover .visibility-icon': { opacity: 1, visibility: 'visible' }
               }}
             >
               <Box>
@@ -117,9 +169,27 @@ export default function PasswordEdit({ onEdit, password }) {
                 <StyledField
                   name={'creds.' + key}
                   defaultValue={value}
+                  placeholder={key}
                   onChange={handleChange}
                   sx={{ ml: 1, mt: 0, mb: 0, pt: 0, pb: 0 }}
                 />
+              </Box>
+              <Box>
+                <Tooltip title="Change Visibility">
+                  <ListItemIcon
+                    className="visibility-icon"
+                    sx={{
+                      opacity: 0,
+                      visibility: 'hidden',
+                      mt: 4,
+                      mr: 1,
+                      transition: 'opacity 0.1s, visibility 0.1s'
+                    }}
+                    onClick={() => handleChangeVisibility(key)}
+                  >
+                    {visibility ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                  </ListItemIcon>
+                </Tooltip>
               </Box>
             </ListItem>
             {index < Object.keys(password.creds).length - 1 && (
@@ -130,18 +200,54 @@ export default function PasswordEdit({ onEdit, password }) {
       </List>
 
       <Typography variant="body1" sx={{ mt: 2 }}>
-        <strong>Website URL:</strong> (Leave Empty to Omit) <br />
+        <strong>Website URL:</strong> <br />
       </Typography>
 
-      <StyledField
-        name="other"
-        placeholder="URL"
-        defaultValue={password.other}
-        onChange={handleChange}
+      <Box
         sx={{
-          fontSize: '20px'
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1
         }}
-      />
+      >
+        {urls.map((url, index) => (
+          <Box
+            key={index}
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 1,
+              '&:hover .delete-icon': { opacity: 1, visibility: 'visible' }
+            }}
+          >
+            <StyledField
+              key={index}
+              name={`other[${index}]`}
+              placeholder={`URL ${index + 1}`}
+              value={url}
+              onChange={(e) => handleURLChange(index, e.target.value)}
+              sx={{
+                p: 0.5,
+                pl: 1,
+                fontSize: '20px',
+                maxWidth: '250px'
+              }}
+            />
+            <IconButton
+              className="delete-icon"
+              size="small"
+              sx={{ mt: 1, border: 'none', visibility: 'hidden' }}
+              onClick={() => handleDeleteURL(index)}
+            >
+              <DeleteRounded />
+            </IconButton>
+          </Box>
+        ))}
+        <Button onClick={handleAddURL} sx={{ p: 0, mt: 1, width: '130px' }}>
+          <AddRounded /> Add Another
+        </Button>
+      </Box>
 
       <Typography sx={{ mt: 1 }}>Password Strength:</Typography>
       <div className={strengthClass}>

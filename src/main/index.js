@@ -92,7 +92,7 @@ ipcMain.handle('get-passwords', async () => {
     return readPasswordsFile()
   } catch (error) {
     console.error('Error reading passwords file:', error)
-    return { error: 'Failed to load passwords' }
+    return { error: 'Failed to load passwords ' + error }
   }
 })
 
