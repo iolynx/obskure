@@ -18,15 +18,20 @@ import '../assets/main.scss'
 import { StarRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material'
 
 export default function PasswordInfo({ password, onDelete, editMode, setEditMode }) {
-  const [showPassword, setShowPassword] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [strength, setStrength] = useState(0)
   const { showDialog, DialogComponent } = useConfirmation()
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
+  const [showPassword, setShowPassword] = useState(
+    password ? Array(Object.keys(password.creds).length).fill(false) : []
+  )
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
+  const togglePasswordVisibility = (index) => {
+    console.log('showpassword: ', showPassword)
+    setShowPassword(
+      (prev) => prev.map((item, i) => (i === index ? !item : item)) // Toggle only the item at the specified index
+    )
   }
 
   const handleCopyPassword = () => {
@@ -162,7 +167,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
                     <Typography variant="subtitle1" sx={{ ml: 1 }}>
                       {!password.hide.includes(key)
                         ? value
-                        : !showPassword
+                        : !showPassword[index]
                           ? '••••••••••••'
                           : value}
                     </Typography>
@@ -177,9 +182,13 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
                           transition: 'opacity 0.1s, visibility 0.1s',
                           mr: 2
                         }}
-                        onClick={togglePasswordVisibility}
+                        onClick={() => togglePasswordVisibility(index)}
                       >
-                        {showPassword ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
+                        {showPassword[index] ? (
+                          <VisibilityRoundedIcon />
+                        ) : (
+                          <VisibilityOffRoundedIcon />
+                        )}
                       </ListItemIcon>
                     )}
                     <ListItemIcon
@@ -237,7 +246,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
         </>
       ) : (
         <Typography variant="body1" sx={{ mt: 2 }}>
-          Select an account show data.
+          Select a Password :)
         </Typography>
       )}
     </Box>

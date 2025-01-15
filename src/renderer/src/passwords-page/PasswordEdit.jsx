@@ -20,7 +20,10 @@ export default function PasswordEdit({ onEdit, password }) {
   const [urls, setUrls] = useState(password.other ? password.other : [])
   const [strength, setStrength] = useState(zxcvbn(password.creds.password).score)
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
-  const [visibility, setVisibility] = useState(false)
+  const [visibility, setVisibility] = useState(
+    Object.keys(password.creds).map((key) => password.hide.includes(key))
+  )
+
   const [newPassword, setNewPassword] = useState({
     service: password.service,
     creds: password.creds,
@@ -88,17 +91,17 @@ export default function PasswordEdit({ onEdit, password }) {
     }
   }
 
-  const handleChangeVisibility = (key) => {
+  const handleChangeVisibility = (key, index) => {
     // do something here
-    setVisibility(!visibility)
-    if (!visibility) {
+    setVisibility((prev) => prev.map((item, i) => (i === index ? !item : item))) // Toggle only the item at the specified index
+    if (!visibility[index]) {
       if (!password.hide.includes(key)) {
         setNewPassword((prev) => ({
           ...prev,
           hide: [...prev.hide, key]
         }))
       }
-    } else if (visibility) {
+    } else if (visibility[index]) {
       if (password.hide.includes(key)) {
         setNewPassword((prev) => ({
           ...prev,
@@ -106,7 +109,7 @@ export default function PasswordEdit({ onEdit, password }) {
         }))
       }
     }
-    console.log(newPassword)
+    console.log(newPassword.hide)
   }
 
   return (
@@ -185,9 +188,9 @@ export default function PasswordEdit({ onEdit, password }) {
                       mr: 1,
                       transition: 'opacity 0.1s, visibility 0.1s'
                     }}
-                    onClick={() => handleChangeVisibility(key)}
+                    onClick={() => handleChangeVisibility(key, index)}
                   >
-                    {visibility ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                    {visibility[index] ? <VisibilityOffRounded /> : <VisibilityRounded />}
                   </ListItemIcon>
                 </Tooltip>
               </Box>
