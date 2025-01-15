@@ -89,7 +89,7 @@ function SearchDialog({ open, handleClose, title, content, onConfirm, passwords 
               '&:hover': {
                 backgroundColor: '#161a23'
               },
-              // backgroundColor: '#0d0d0d'  alternate background color
+              // backgroundColor: '#0d0d0d'  alternate backgroudn
               backgroundColor: '#121212'
             },
             '& + .MuiAutocomplete-popper': {

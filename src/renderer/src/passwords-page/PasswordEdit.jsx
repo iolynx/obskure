@@ -18,17 +18,25 @@ import {
 export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
   const [urls, setUrls] = useState(password.other ? password.other : [])
-  const [strength, setStrength] = useState(zxcvbn(password.creds.password).score)
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
   const [visibility, setVisibility] = useState(
     Object.keys(password.creds).map((key) => password.hide.includes(key))
   )
-
   const [newPassword, setNewPassword] = useState({
     service: password.service,
     creds: password.creds,
     other: password.other,
     hide: password.hide
+  })
+  const [strength, setStrength] = useState(() => {
+    const hiddenValues = password.hide || [] // Ensure hidden is an array
+    const firstHiddenKey = hiddenValues.length > 0 ? hiddenValues[0] : null // Get the first value or null
+
+    if (firstHiddenKey && password.creds[firstHiddenKey]) {
+      return zxcvbn(password.creds[firstHiddenKey]).score // Compute strength for the first hidden key
+    }
+
+    return 0 // Default strength if no valid key exists
   })
 
   const handleChange = (e) => {
@@ -130,7 +138,7 @@ export default function PasswordEdit({ onEdit, password }) {
       <StyledField
         name="service"
         placeholder="Service Name"
-        defaultValue={password.creds.service}
+        defaultValue={password.service}
         value={newPassword.service}
         onChange={handleChange}
         margin="normal"
@@ -259,7 +267,7 @@ export default function PasswordEdit({ onEdit, password }) {
       </div>
 
       {/* is greyed out until changes are made */}
-      <Button variant="outlined" onClick={handleSubmit} sx={{ margin: '10px' }}>
+      <Button variant="contained" onClick={handleSubmit} sx={{ margin: '10px' }}>
         Save Changes
       </Button>
       <Button variant="outlined" onClick={handleExit}>

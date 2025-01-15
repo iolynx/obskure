@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider'
 import Header from './components/Header'
 import MainContent from './passwords-page/MainContent'
 import { useState } from 'react'
+import Popup from './components/AddPopup.jsx'
 
 const PWContainer = styled(Stack)(({ theme }) => ({
   '&::before': {
@@ -26,9 +27,52 @@ const PWContainer = styled(Stack)(({ theme }) => ({
 }))
 
 export default function PasswordsPage(props) {
-  const [addMode, setAddMode] = useState(false)
+  const [addMode, setAddMode] = useState('')
+  const [schemas, setSchemas] = useState([])
+  const [schema, setSchema] = useState(null)
+  const [open, setOpen] = useState(false)
 
-  const handleAddClick = () => {
+  const handleOpen = () => {
+    setOpen(true) // Open the popup
+  }
+
+  const handleClose = () => {
+    setOpen(false) // Close the popup
+  }
+
+  async function handleAddClick() {
+    // get the schemas
+    // open a popup
+    // get the result from popup
+    // feed that to passwordedit
+    try {
+      const result = await window.electronAPI.getSchemas()
+      if (result.error) {
+        console.log(result.error)
+        // open a snackbar showing error
+      } else {
+        console.log(result)
+        setSchemas(result)
+      }
+    } catch (err) {
+      console.error('Error fetching passwords:', err)
+      // open a snackbar showing error
+    }
+    handleOpen()
+  }
+
+  async function handleSchemaSelect(value) {
+    try {
+      const result = await window.electronAPI.getSchemaContents(value)
+      if (result.error) {
+        console.log(result.error)
+      } else {
+        console.log(result)
+        setSchema(result)
+      }
+    } catch (err) {
+      console.error('Error obtaining schema contents: ', err)
+    }
     setAddMode(!addMode)
   }
 
@@ -67,10 +111,17 @@ export default function PasswordsPage(props) {
             }}
           >
             <Header onAddClick={handleAddClick} />
-            <MainContent addMode={addMode} setAddMode={setAddMode} />{' '}
+            <MainContent addMode={addMode} setAddMode={setAddMode} schema={schema} />{' '}
             {/* add passwordgroup: all/foldername type shi */}
           </Box>
         </Stack>
+        <Popup
+          open={open}
+          handleClose={handleClose}
+          title="Add Password"
+          schemas={schemas}
+          onValueSelect={handleSchemaSelect}
+        />
       </PWContainer>
     </AppTheme>
   )

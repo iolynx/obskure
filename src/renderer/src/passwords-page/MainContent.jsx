@@ -6,7 +6,7 @@ import PasswordsList from './PasswordsList'
 import PasswordEntry from './PasswordEntry'
 import PasswordEdit from './PasswordEdit'
 
-export default function MainContent({ addMode, setAddMode }) {
+export default function MainContent({ addMode, setAddMode, schema }) {
   const [passwords, setPasswords] = useState([])
   const [selectedPassword, setSelectedPassword] = useState(null)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -70,9 +70,13 @@ export default function MainContent({ addMode, setAddMode }) {
 
   const handlePasswordEdit = async (newPassword, oldPassword) => {
     setEditMode(false)
+    if (addMode) {
+      setAddMode(false)
+      setSelectedPassword(null)
+      return
+    }
 
     if (newPassword === null) {
-      console.log('no changes bro')
       setSelectedPassword(oldPassword)
       return
     }
@@ -136,7 +140,7 @@ export default function MainContent({ addMode, setAddMode }) {
         }}
       >
         {addMode ? (
-          <PasswordEntry onAddition={handlePasswordAddition} />
+          <PasswordEdit onEdit={handlePasswordEdit} password={schema} />
         ) : editMode ? (
           <PasswordEdit onEdit={handlePasswordEdit} password={selectedPassword} />
         ) : (

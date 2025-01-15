@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { AssuredWorkload } from '@mui/icons-material'
 const fs = require('fs')
 const path = require('path')
 
@@ -72,6 +73,15 @@ app.on('window-all-closed', () => {
   }
 })
 
+function readSchemaFile() {
+  const schemaFilePath = path.join(__dirname, '../credentials/schemas.json')
+  if (!fs.existsSync(schemaFilePath)) {
+    return []
+  }
+  const data = fs.readFileSync(schemaFilePath, 'utf8')
+  return JSON.parse(data)
+}
+
 function readPasswordsFile() {
   const passwordsFilePath = path.join(__dirname, '../credentials/passwords.json')
   if (!fs.existsSync(passwordsFilePath)) {
@@ -86,6 +96,26 @@ function writePasswordsFile(passwords) {
   const newPasswordJSON = JSON.stringify(passwords)
   fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8')
 }
+
+ipcMain.handle('get-schema-contents', async (event, schema) => {
+  try {
+    const schemas = readSchemaFile()
+    return schemas[schema]
+  } catch (error) {
+    console.error('Error obtaining schema details: ', error)
+    return { error: 'Failed to obtain schema details ' + error }
+  }
+})
+
+ipcMain.handle('get-schemas', async () => {
+  try {
+    const schemas = readSchemaFile()
+    return Object.keys(schemas)
+  } catch (error) {
+    console.error('Error reading schema file: ', error)
+    return { error: 'Failed to read Schemas ' + error }
+  }
+})
 
 ipcMain.handle('get-passwords', async () => {
   try {
