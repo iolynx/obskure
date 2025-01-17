@@ -4,10 +4,7 @@
 fix scrollbars
 
 design:
-- show copy icon only when hover on password in passwordlist
 - add notes for each password
-- make the line line thingies into the oval thingies (input)
-- move edit and delete buttons for password info to the bottom
 
 
 for tomorrow asap:
