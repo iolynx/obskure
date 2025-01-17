@@ -28,7 +28,7 @@ export default function PasswordEdit({ onEdit, password }) {
     creds: password.creds,
     other: password.other,
     hide: password.hide,
-    id: uuidv4()
+    id: password.id || uuidv4()
   })
   const [strength, setStrength] = useState(() => {
     const hiddenValues = password.hide || [] // Ensure hidden is an array
