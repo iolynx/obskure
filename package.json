@@ -29,6 +29,7 @@
     "react-router-dom": "^7.0.2",
     "react-search-box": "^2.3.0",
     "react-select": "^5.9.0",
+    "uuid": "^11.0.5",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
