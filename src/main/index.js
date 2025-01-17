@@ -97,6 +97,21 @@ function writePasswordsFile(passwords) {
   fs.writeFileSync(passwordsFilePath, newPasswordJSON, 'utf-8')
 }
 
+function readFavouritesFile() {
+  const favouritesFilePath = path.join(__dirname, '../credentials/favourites.json')
+  if (!fs.existsSync(favouritesFilePath)) {
+    return { error: 'Favourites File does not exist' }
+  }
+  const data = fs.readFileSync(favouritesFilePath, 'utf8')
+  return JSON.parse(data)
+}
+
+function writeFavouritesFile(favourites) {
+  const favouritesFilePath = path.join(__dirname, '../credentials/favourites.json')
+  const favouritesJSON = JSON.stringify(favourites)
+  fs.writeFileSync(favouritesFilePath, favouritesJSON, 'utf-8')
+}
+
 ipcMain.handle('get-schema-contents', async (event, schema) => {
   try {
     const schemas = readSchemaFile()
@@ -154,6 +169,44 @@ ipcMain.handle('delete-password', async (event, passwordToDelete) => {
     return { success: true, remainingEntries: updatedPasswords }
   } catch (error) {
     console.error('Error deleting password', error)
+    return { success: false, error: error }
+  }
+})
+
+ipcMain.handle('get-favourites', async () => {
+  try {
+    const favourites = readFavouritesFile()
+    return favourites
+  } catch (error) {
+    console.error('Error obtaining favourites: ', error)
+    return { success: false, error: error }
+  }
+})
+
+ipcMain.handle('add-favourite', async (event, newFav) => {
+  try {
+    const favourites = readFavouritesFile()
+    if (!favourites.includes(newFav)) {
+      favourites.push(newFav)
+    }
+    // console.log('favourite added.\nfavourites: ', favourites)
+    writeFavouritesFile(favourites)
+    return favourites
+  } catch (error) {
+    console.log('Unable to write to favourites file: ', error)
+    return { success: false, error: error }
+  }
+})
+
+ipcMain.handle('delete-favourite', async (event, favToDelete) => {
+  try {
+    const favourites = readFavouritesFile()
+    const updatedFavs = favourites.filter((item) => item !== favToDelete)
+    // console.log('Favourites deleted.\nFavourites: ', updatedFavs)
+    writeFavouritesFile(updatedFavs)
+    return updatedFavs
+  } catch (error) {
+    console.error('Error deleting favourite', error)
     return { success: false, error: error }
   }
 })

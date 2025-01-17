@@ -16,6 +16,8 @@ import useConfirmation from './useConfirmation'
 import zxcvbn from 'zxcvbn'
 import '../assets/main.scss'
 import { StarRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material'
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
 export default function PasswordInfo({ password, onDelete, editMode, setEditMode }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -23,9 +25,23 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   const [strength, setStrength] = useState(0)
   const { showDialog, DialogComponent } = useConfirmation()
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
+  const [favourites, setFavourites] = useState([])
   const [showPassword, setShowPassword] = useState(
     password ? Array(Object.keys(password.creds).length).fill(false) : []
   )
+
+  const fetchFavourites = async () => {
+    try {
+      const favs = await window.electronAPI.getFavourites()
+      setFavourites(favs)
+    } catch (error) {
+      console.error("Failed to fetch favourites:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchFavourites(); // This will run once when the component mounts
+  }, []);
 
   const togglePasswordVisibility = (index) => {
     console.log('showpassword: ', showPassword)
@@ -66,8 +82,20 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
     setSnackbarOpen(false)
   }
 
-  const handleFavourite = () => {
-    // write some code to pull up a favourites file and add this to it
+  const handleFavourite = async (newItem) => {
+    await fetchFavourites()
+    try {
+      if (favourites.includes(newItem)) {
+        const result = await window.electronAPI.deleteFavourite(newItem)
+        setFavourites(result)
+      } else {
+        console.log("inc is called")
+        const result = await window.electronAPI.addFavourite(newItem)
+        setFavourites(result)
+      }
+    } catch (err) {
+      console.error("Could not update favourites :", err)
+    }
   }
 
   const handleDelete = async () => {
@@ -86,7 +114,6 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   }
 
   useEffect(() => {
-    console.log(password)
     if (password && password.creds.password) {
       const score = zxcvbn(password.creds.password).score
       setStrength(score)
@@ -114,9 +141,24 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
               mb: 1
             }}
           >
-            <Typography variant="h2" sx={{ fontWeight: 600 }}>
-              {password.service}
-            </Typography>
+            <Box sx={{ width: '200px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Typography variant="h2" sx={{ fontWeight: 600 }}>
+                {password.service}
+              </Typography>
+
+              <Button
+                aria-label="favourite"
+                sx={{ backgroundColor: "theme.palette.primary.main", '&:hover': { backgroundColor: 'inherit' }, mr: 1 }}
+                onClick={() => handleFavourite(password.id)}
+              >
+                <Tooltip title=
+                  {favourites.includes(password.id) ? "Remove from Favourites" : "Add to Favourites"}
+                >
+                  {favourites.includes(password.id) ? (<FavoriteRoundedIcon size='large' />) : (<FavoriteBorderRoundedIcon size='large' />)}
+                </Tooltip>
+                &nbsp;
+              </Button>
+            </Box>
 
             <Box
               sx={{
@@ -125,11 +167,8 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
                 mb: 5
               }}
             >
-              <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleFavourite}>
-                <StarRounded fontSize="16px" /> &nbsp; Favourite
-              </Button>
 
-              <Button aria-label="delete" sx={{ mr: 1 }} onClick={handleEdit}>
+              <Button aria-label="edit" sx={{ mr: 1 }} onClick={handleEdit}>
                 <EditRoundedIcon fontSize="14px" /> &nbsp; Edit
               </Button>
 

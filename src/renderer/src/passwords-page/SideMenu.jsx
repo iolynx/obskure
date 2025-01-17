@@ -23,7 +23,7 @@ const Drawer = styled(MuiDrawer)({
   }
 })
 
-export default function SideMenu() {
+export default function SideMenu({ selected, setSelected }) {
   const navigate = useNavigate()
 
   const logoutClicked = (event) => {
@@ -42,7 +42,7 @@ export default function SideMenu() {
         }
       }}
     >
-      <MenuContent />
+      <MenuContent selected={selected} setSelected={setSelected} />
       <Stack
         direction="row"
         sx={{

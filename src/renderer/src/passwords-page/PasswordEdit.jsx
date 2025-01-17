@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { useState, useEffect } from 'react'
 import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
@@ -26,7 +27,8 @@ export default function PasswordEdit({ onEdit, password }) {
     service: password.service,
     creds: password.creds,
     other: password.other,
-    hide: password.hide
+    hide: password.hide,
+    id: uuidv4()
   })
   const [strength, setStrength] = useState(() => {
     const hiddenValues = password.hide || [] // Ensure hidden is an array

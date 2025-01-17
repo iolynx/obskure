@@ -10,7 +10,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   savePassword: (newPassword) => ipcRenderer.invoke('save-password', newPassword),
   deletePassword: (passwordToDelete) => ipcRenderer.invoke('delete-password', passwordToDelete),
   getSchemas: () => ipcRenderer.invoke('get-schemas'),
-  getSchemaContents: (schema) => ipcRenderer.invoke('get-schema-contents', schema)
+  getSchemaContents: (schema) => ipcRenderer.invoke('get-schema-contents', schema),
+  getFavourites: () => ipcRenderer.invoke('get-favourites'),
+  addFavourite: (newFav) => ipcRenderer.invoke('add-favourite', newFav),
+  deleteFavourite: (favToDelete) => ipcRenderer.invoke('delete-favourite', favToDelete)
 })
 
 // Use `contextBridge` APIs to expose Electron APIs to

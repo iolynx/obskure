@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useState } from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -27,13 +28,20 @@ const secondaryListItems = [
   { text: 'About', icon: <InfoRoundedIcon /> }
 ]
 
-export default function SideMenuContent() {
+export default function SideMenuContent({ selected, setSelected }) {
+
+  const handleClick = (item) => {
+    console.log(item.text, " clicked")
+    setSelected(item.text)
+  }
+
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton selected={item.text === selected} onClick={() => handleClick(item)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

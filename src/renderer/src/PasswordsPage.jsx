@@ -31,6 +31,7 @@ export default function PasswordsPage(props) {
   const [schemas, setSchemas] = useState([])
   const [schema, setSchema] = useState(null)
   const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState('All')
 
   const handleOpen = () => {
     setOpen(true) // Open the popup
@@ -49,14 +50,14 @@ export default function PasswordsPage(props) {
       const result = await window.electronAPI.getSchemas()
       if (result.error) {
         console.log(result.error)
-        // open a snackbar showing error
+        //TODO: open a snackbar showing error
       } else {
         console.log(result)
         setSchemas(result)
       }
     } catch (err) {
       console.error('Error fetching passwords:', err)
-      // open a snackbar showing error
+      //TODO: open a snackbar showing error
     }
     handleOpen()
   }
@@ -98,7 +99,7 @@ export default function PasswordsPage(props) {
             marginLeft: '-16px'
           }}
         >
-          <SideMenu />
+          <SideMenu selected={selected} setSelected={setSelected} />
           <Divider orientation="vertical" />
           <Box
             component="main"
@@ -111,8 +112,7 @@ export default function PasswordsPage(props) {
             }}
           >
             <Header onAddClick={handleAddClick} />
-            <MainContent addMode={addMode} setAddMode={setAddMode} schema={schema} />{' '}
-            {/* add passwordgroup: all/foldername type shi */}
+            <MainContent addMode={addMode} setAddMode={setAddMode} schema={schema} selected={selected} />
           </Box>
         </Stack>
         <Popup

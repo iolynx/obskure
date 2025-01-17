@@ -6,7 +6,7 @@ import PasswordsList from './PasswordsList'
 import PasswordEntry from './PasswordEntry'
 import PasswordEdit from './PasswordEdit'
 
-export default function MainContent({ addMode, setAddMode, schema }) {
+export default function MainContent({ addMode, setAddMode, schema, selected }) {
   const [passwords, setPasswords] = useState([])
   const [selectedPassword, setSelectedPassword] = useState(null)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -16,13 +16,23 @@ export default function MainContent({ addMode, setAddMode, schema }) {
 
   useEffect(() => {
     async function fetchPasswords() {
+      setSelectedPassword(null)
       try {
         const result = await window.electronAPI.getPasswords()
         if (result.error) {
           console.log(result.error)
           setError(result.error)
         } else {
-          setPasswords(result)
+          if (selected === 'All') {
+            setPasswords(result)
+          } else if (selected === 'Favourites') {
+            const favourites = await window.electronAPI.getFavourites()
+            const matchingPasswords = result.filter((password) =>
+              favourites.includes(password.id)
+            );
+            setPasswords(matchingPasswords)
+          }
+
         }
       } catch (err) {
         console.error('Error fetching passwords:', err)
@@ -30,7 +40,7 @@ export default function MainContent({ addMode, setAddMode, schema }) {
       }
     }
     fetchPasswords()
-  }, [])
+  }, [selected])
 
   const handlePasswordSelect = (password) => {
     setSelectedPassword(password)
@@ -73,7 +83,6 @@ export default function MainContent({ addMode, setAddMode, schema }) {
     if (addMode) {
       setAddMode(false)
       setSelectedPassword(null)
-      return
     }
 
     if (newPassword === null) {
