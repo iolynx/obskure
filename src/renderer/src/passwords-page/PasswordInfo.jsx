@@ -270,6 +270,9 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
             <div className="strength-meter-fill" data-strength={strength}></div>
           </div>
 
+
+          <Typography sx={{ mt: 2 }}> Password Strength:</Typography>
+
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={1400}
