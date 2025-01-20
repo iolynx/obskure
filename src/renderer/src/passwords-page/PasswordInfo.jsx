@@ -27,7 +27,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
   const [favourites, setFavourites] = useState([])
   const [showPassword, setShowPassword] = useState(
-    password ? Array(Object.keys(password.creds).length).fill(false) : []
+    password ? Array(Object.keys(password.creds).length).fill(false) : [false, false, false, false, false]
   )
 
   const fetchFavourites = async () => {
@@ -44,10 +44,11 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
   }, []);
 
   const togglePasswordVisibility = (index) => {
-    console.log('showpassword: ', showPassword)
+    console.log(index)
     setShowPassword(
       (prev) => prev.map((item, i) => (i === index ? !item : item)) // Toggle only the item at the specified index
     )
+    console.log('showpassword: ', showPassword)
   }
 
   const handleCopyPassword = () => {

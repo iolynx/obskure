@@ -19,6 +19,7 @@ import {
 export default function PasswordEdit({ onEdit, password }) {
   const [showPassword, setShowPassword] = useState(false)
   const [urls, setUrls] = useState(password.other ? password.other : [])
+  const [tags, setTags] = useState(password.tags ? password.tags : [])
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
   const [visibility, setVisibility] = useState(
     Object.keys(password.creds).map((key) => password.hide.includes(key))
@@ -28,7 +29,8 @@ export default function PasswordEdit({ onEdit, password }) {
     creds: password.creds,
     other: password.other,
     hide: password.hide,
-    id: password.id || uuidv4()
+    id: password.id || uuidv4(),
+    tags: password.tags || []
   })
   const [strength, setStrength] = useState(() => {
     const hiddenValues = password.hide || [] // Ensure hidden is an array
@@ -75,6 +77,15 @@ export default function PasswordEdit({ onEdit, password }) {
     setUrls(updatedUrls)
   }
 
+  const handleTagChange = (e, setTags) => {
+    // const newTags = e.target.value
+    //   .split(/[\s,]+/) // Split by spaces or commas
+    //   .filter(tag => tag.trim() !== "") // Remove empty strings
+    //   .map(tag => tag.trim()); // Trim whitespace from each tag
+
+    setTags(e.target.value);
+  }
+
   const handleURLChange = (index, value) => {
     const updatedUrls = [...urls]
     updatedUrls[index] = value
@@ -83,6 +94,7 @@ export default function PasswordEdit({ onEdit, password }) {
   }
 
   const handleSubmit = (e) => {
+    newPassword.tags = tags
     newPassword.other = urls
     console.log('Edited Password: ', newPassword)
     e.preventDefault()
@@ -268,6 +280,23 @@ export default function PasswordEdit({ onEdit, password }) {
         <div className="strength-meter-fill" data-strength={strength}></div>
       </div>
 
+
+      <Box sx={{ maxWidth: '800px' }}>
+        <Typography variant="h5" sx={{ mt: 4 }}>Tags: </Typography>
+        <StyledField
+          name="tag"
+          placeholder="comma, separated, tags"
+          onChange={(e) => handleTagChange(e, setTags)}
+          value={tags}
+          sx={{
+            p: 0.5,
+            pl: 1,
+            fontSize: '20px',
+            maxWidth: '100vw'
+          }}
+        />
+      </Box>
+
       {/* is greyed out until changes are made */}
       <Button variant="contained" onClick={handleSubmit} sx={{ margin: '10px' }}>
         Save Changes
@@ -275,7 +304,7 @@ export default function PasswordEdit({ onEdit, password }) {
       <Button variant="outlined" onClick={handleExit}>
         Cancel
       </Button>
-    </Box>
+    </Box >
   )
 }
 
