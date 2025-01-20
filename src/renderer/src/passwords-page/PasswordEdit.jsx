@@ -83,7 +83,9 @@ export default function PasswordEdit({ onEdit, password }) {
     //   .filter(tag => tag.trim() !== "") // Remove empty strings
     //   .map(tag => tag.trim()); // Trim whitespace from each tag
 
-    setTags(e.target.value);
+    const result = e.target.value.split(",").map(word => word.trim());
+    setTags(result);
+    console.log(tags)
   }
 
   const handleURLChange = (index, value) => {
@@ -285,9 +287,9 @@ export default function PasswordEdit({ onEdit, password }) {
         <Typography variant="h5" sx={{ mt: 4 }}>Tags: </Typography>
         <StyledField
           name="tag"
+          defaultValue={password.tags ? password.tags : ""}
           placeholder="comma, separated, tags"
           onChange={(e) => handleTagChange(e, setTags)}
-          value={tags}
           sx={{
             p: 0.5,
             pl: 1,

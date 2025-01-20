@@ -253,7 +253,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
 
           {password.other ? (
             <Box sx={{ mt: 2, mb: 2 }}>
-              <Typography variant="body1">Website URL:</Typography>
+              <Typography variant="h5" sx={{ mt: 5 }}>Website URL:</Typography>
               {password.other.map((url, index) => (
                 <a href={'https://' + url} target="_blank" rel="noopener noreferrer" key={index}>
                   <Typography button variant="h5" color="lightblue">
@@ -266,13 +266,11 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
             <></>
           )}
 
-          <Typography sx={{ mt: 2 }}>Password Strength:</Typography>
+          <Typography variant="h5" sx={{ mt: 5 }}>Password Strength:</Typography>
           <div className={strengthClass} style={{ width: '240px' }}>
             <div className="strength-meter-fill" data-strength={strength}></div>
           </div>
 
-
-          <Typography sx={{ mt: 2 }}> Password Strength:</Typography>
 
           <Snackbar
             open={snackbarOpen}
@@ -284,6 +282,19 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
               {snackbarMessage}
             </Alert>
           </Snackbar>
+
+          <Box sx={{ maxWidth: '800px' }}>
+            <Typography variant="h5" sx={{ mt: 4 }}>Tags:</Typography>
+            {password.tags && password.tags.length > 0 ? (
+              password.tags.map((tag, index) => (
+                <Typography key={index} variant="subtitle2">
+                  {tag}
+                </Typography>
+              ))
+            ) : (
+              <Typography>No tags for this Item.</Typography>
+            )}
+          </Box>
 
           {DialogComponent}
         </>

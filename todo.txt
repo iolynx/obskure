@@ -4,6 +4,7 @@
 fix scrollbars
 
 design:
+- add categories n shi
 - add notes for each password
 
 
