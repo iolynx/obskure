@@ -17,7 +17,6 @@ import {
 } from '@mui/icons-material'
 
 export default function PasswordEdit({ onEdit, password }) {
-  const [showPassword, setShowPassword] = useState(false)
   const [urls, setUrls] = useState(password.other ? password.other : [])
   const [tags, setTags] = useState(password.tags ? password.tags : [])
   const strengthClass = ['strength-meter mt-2 visible'].join(' ').trim()
@@ -314,7 +313,8 @@ PasswordEdit.propTypes = {
   onEdit: PropTypes.func.isRequired, // Ensures onEdit is a required function
   password: PropTypes.shape({
     service: PropTypes.string.isRequired, // Ensures service is a required string
-    creds: PropTypes.object.isRequired,
-    other: PropTypes.string
+    creds: PropTypes.object.isRequired, //Ensures that creds is a required object
+    other: PropTypes.string,
+    tags: PropTypes.array,
   }).isRequired // Ensures the entire password object is required
 }
