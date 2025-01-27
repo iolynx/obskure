@@ -76,12 +76,8 @@ export default function PasswordEdit({ onEdit, password }) {
     setUrls(updatedUrls)
   }
 
+  // this is for handling tags
   const handleTagChange = (e, setTags) => {
-    // const newTags = e.target.value
-    //   .split(/[\s,]+/) // Split by spaces or commas
-    //   .filter(tag => tag.trim() !== "") // Remove empty strings
-    //   .map(tag => tag.trim()); // Trim whitespace from each tag
-
     const result = e.target.value.split(",").map(word => word.trim());
     setTags(result);
     console.log(tags)
@@ -107,6 +103,7 @@ export default function PasswordEdit({ onEdit, password }) {
     onEdit(null, password)
   }
 
+  // update the password strength using zxcvbn module
   function updatePasswordStrength(password) {
     if (password) {
       const score = zxcvbn(password).score
@@ -115,8 +112,8 @@ export default function PasswordEdit({ onEdit, password }) {
     }
   }
 
+  // toggling the visibility of the password
   const handleChangeVisibility = (key, index) => {
-    // do something here
     setVisibility((prev) => prev.map((item, i) => (i === index ? !item : item))) // Toggle only the item at the specified index
     if (!visibility[index]) {
       if (!password.hide.includes(key)) {
