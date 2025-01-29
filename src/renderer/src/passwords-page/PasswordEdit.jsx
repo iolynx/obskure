@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { useState, useEffect } from 'react'
-import { styled } from '@mui/material/styles'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { List, ListItem, Divider, Tooltip } from '@mui/material'
 import { Box, Typography, Button, IconButton, ListItemIcon } from '@mui/material'

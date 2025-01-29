@@ -3,8 +3,8 @@ import { ButtonBase, Divider, Icon } from '@mui/material'
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { IconButton, Button, Tooltip } from '@mui/material'
-import { List, ListItem, ListItemButton, ListItemText, ListItemIcon } from '@mui/material'
+import { Button, Tooltip } from '@mui/material'
+import { List, ListItem, ListItemIcon } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
@@ -15,7 +15,6 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import useConfirmation from './useConfirmation'
 import zxcvbn from 'zxcvbn'
 import '../assets/main.scss'
-import { StarRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
@@ -142,7 +141,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
               mb: 1
             }}
           >
-            <Box sx={{ width: '200px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <Typography variant="h2" sx={{ fontWeight: 600 }}>
                 {password.service}
               </Typography>
@@ -284,7 +283,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
           </Snackbar>
 
           <Box sx={{ maxWidth: '800px' }}>
-            <Typography variant="h5" sx={{ mt: 4 }}>Tags:</Typography>
+            <Typography variant="h5" sx={{ mt: 4, mb: 1 }}>Tags:</Typography>
             {password.tags && password.tags.length > 0 ? (
               password.tags.map((tag, index) => (
                 <Typography key={index} variant="subtitle2">

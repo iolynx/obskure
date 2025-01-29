@@ -86,7 +86,7 @@ export default function MainContent({ addMode, setAddMode, schema, selected }) {
     }
 
     if (newPassword === null) {
-      setSelectedPassword(oldPassword)
+      setSelectedPassword(null)
       return
     }
 
