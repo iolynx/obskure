@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { ButtonBase, Divider, Icon } from '@mui/material'
+import { Divider } from '@mui/material'
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { Button, Tooltip } from '@mui/material'
+import { Button, Tooltip, Paper } from '@mui/material'
 import { List, ListItem, ListItemIcon } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
@@ -60,20 +60,6 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
       .catch((err) => {
         console.error('Failed to copy password: ', err)
         setSnackbarMessage('Failed to copy password')
-        setSnackbarOpen(true)
-      })
-  }
-
-  const handleCopyUsername = () => {
-    navigator.clipboard
-      .writeText(password.username)
-      .then(() => {
-        setSnackbarMessage('Username copied to clipboard!')
-        setSnackbarOpen(true)
-      })
-      .catch((err) => {
-        console.error('Failed to copy Username: ', err)
-        setSnackbarMessage('Failed to copy Username')
         setSnackbarOpen(true)
       })
   }
@@ -271,6 +257,7 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
           </div>
 
 
+
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={1400}
@@ -286,9 +273,11 @@ export default function PasswordInfo({ password, onDelete, editMode, setEditMode
             <Typography variant="h5" sx={{ mt: 4, mb: 1 }}>Tags:</Typography>
             {password.tags && password.tags.length > 0 ? (
               password.tags.map((tag, index) => (
-                <Typography key={index} variant="subtitle2">
-                  {tag}
-                </Typography>
+                <Paper sx={{ width: 'fit-content', mb: 1, p: 1, border: '1px solid' }} >
+                  <Typography key={index} variant="subtitle2">
+                    {tag}
+                  </Typography>
+                </Paper>
               ))
             ) : (
               <Typography>No tags for this Item.</Typography>

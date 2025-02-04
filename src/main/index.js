@@ -150,7 +150,7 @@ ipcMain.handle('save-password', async (event, newPassword) => {
     return { success: true, newPasswords: passwords }
   } catch (error) {
     console.error('Error saving passwords:', error)
-    return { success: false, error }
+    return { success: false, error: error }
   }
 })
 
