@@ -8,7 +8,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useSearchDialog from './useSearchDialog'
 import ReactSearchBox from 'react-search-box'
 
-export default function Header({ onAddClick }) {
+export default function Header({ onAddClick, content }) {
   const { showDialog, SearchDialogComponent } = useSearchDialog()
 
   const openSearchDialog = async () => {
@@ -41,7 +41,7 @@ export default function Header({ onAddClick }) {
       spacing={2}
     >
       <Stack direction="row" sx={{ gap: 5.8 }}>
-        <TitleBar />
+        <TitleBar content={content} />
 
         <Tooltip title="Add New Record">
           <IconButton aria-label="plus" size="small" onClick={onAddClick}>

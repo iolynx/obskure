@@ -3,11 +3,11 @@ import React from 'react';
 import Box from '@mui/material/Box';
 
 
-export default function TitleBar() {
+export default function TitleBar({ content }) {
   return (
     <Box>
       <Typography variant='h4'>
-        All Passwords
+        {content}
       </Typography>
     </Box>
   );

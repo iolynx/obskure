@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+//import { useState } from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -9,13 +9,9 @@ import Stack from '@mui/material/Stack'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded'
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded'
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded'
-import WifiPasswordRoundedIcon from '@mui/icons-material/WifiPasswordRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import StarRateRoundedIcon from '@mui/icons-material/StarRateRounded'
-import { DeleteRounded, ExpandMoreRounded } from '@mui/icons-material'
-import { Button, IconButton } from '@mui/material'
+import { ExpandMoreRounded } from '@mui/icons-material'
 
 const mainListItems = [
   { text: 'All', icon: <HomeRoundedIcon /> },
@@ -52,7 +48,7 @@ export default function SideMenuContent({ selected, setSelected }) {
           <ListItemText>
             Categories
             <ListItemIcon>
-              <ExpandMoreRounded onClick={() => console.log('hi')} />
+              <ExpandMoreRounded />
             </ListItemIcon>
           </ListItemText>
         </ListItem>

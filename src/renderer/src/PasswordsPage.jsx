@@ -111,7 +111,7 @@ export default function PasswordsPage(props) {
               height: '100vh'
             }}
           >
-            <Header onAddClick={handleAddClick} />
+            <Header onAddClick={handleAddClick} content={selected} />
             <MainContent addMode={addMode} setAddMode={setAddMode} schema={schema} selected={selected} />
           </Box>
         </Stack>
