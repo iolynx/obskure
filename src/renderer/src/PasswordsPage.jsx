@@ -32,13 +32,14 @@ export default function PasswordsPage(props) {
   const [schema, setSchema] = useState(null)
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState('All')
+  const [tagItems, setTagItems] = useState([])
 
   const handleOpen = () => {
-    setOpen(true) // Open the popup
+    setOpen(true)
   }
 
   const handleClose = () => {
-    setOpen(false) // Close the popup
+    setOpen(false)
   }
 
   async function handleAddClick() {
@@ -77,11 +78,40 @@ export default function PasswordsPage(props) {
     setAddMode(!addMode)
   }
 
+
+  async function getTags() {
+    try {
+      const result = await window.electronAPI.getPasswords()
+      if (result.error) {
+        console.log(result.error)
+      } else {
+        const uniqueTags = new Set()
+
+        result.forEach(password => {
+          if (password.tags !== undefined && Array.isArray(password.tags)) {
+            password.tags.forEach(tag => uniqueTags.add(tag));
+          }
+        });
+
+        setTagItems(
+          Array.from(uniqueTags).map(tag => ({ text: tag }))
+        )
+      }
+    } catch (err) {
+      console.error('Error obtaining tags (Could not obtain Passwords)', err)
+    }
+  }
+
   useEffect(() => {
-    // Add class to body
+
+    // get the list of unique tags
+    console.log("hi from the usefffect")
+    getTags()
+
+    // add class to body
     document.body.classList.add('custom-justify')
 
-    // Cleanup on unmount
+    // cleanup on unmount
     return () => {
       document.body.classList.remove('custom-justify')
     }
@@ -99,7 +129,7 @@ export default function PasswordsPage(props) {
             marginLeft: '-16px'
           }}
         >
-          <SideMenu selected={selected} setSelected={setSelected} />
+          <SideMenu selected={selected} setSelected={setSelected} tagItems={tagItems} />
           <Divider orientation="vertical" />
           <Box
             component="main"

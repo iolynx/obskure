@@ -31,6 +31,15 @@ export default function MainContent({ addMode, setAddMode, schema, selected }) {
               favourites.includes(password.id)
             );
             setPasswords(matchingPasswords)
+          } else if (selected.startsWith('tag: ')) {
+            const selectedTag = selected.slice(5).trim()
+            //filter the passwords by tag
+            const filteredPasswords = result.filter(password => {
+              if (password.tags !== undefined) {
+                return password.tags.includes(selectedTag)
+              }
+            })
+            setPasswords(filteredPasswords)
           }
 
         }

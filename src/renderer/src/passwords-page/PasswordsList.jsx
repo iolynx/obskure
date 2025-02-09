@@ -48,7 +48,7 @@ export default function PasswordsList({ passwords, onPasswordSelect, error }) {
       }}
     >
       {error ? (
-        <p> {error} </p>
+        <Box sx={{ pt: 2, pl: 2 }}> {error} </Box>
       ) : (
         <List
           direction="row"
