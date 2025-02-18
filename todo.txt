@@ -1,11 +1,9 @@
 - add search tools
-- fix other menu types
 - add recently deleted functionality (deleting moves the record to a recently deleted record list
   which clears automatically after a few days)
 
 design:
 - categories page
-- add notes for each password
 
 asap:
  - add notes to passwords
